@@ -1,0 +1,23 @@
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+
+import { ExpertSearchComponent } from './expert-search.component';
+
+describe('ExpertSearchComponent', () => {
+  let component: ExpertSearchComponent;
+  let fixture: ComponentFixture<ExpertSearchComponent>;
+
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      declarations: [ ExpertSearchComponent ]
+    })
+    .compileComponents();
+
+    fixture = TestBed.createComponent(ExpertSearchComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+  });
+
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
+});

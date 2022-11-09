@@ -1,0 +1,100 @@
+<div class="row">
+  <div class="col-xs-12 col-md-6 col-md-offset-3">
+    <div *ngIf="isLoading" style="text-align: center;">
+      <app-loading-spinner></app-loading-spinner>
+    </div>
+    <form [formGroup]="signInForm" (ngSubmit)="onSubmit()" *ngIf="!isLoginMode && !isLoading">
+      <div class="form-group">
+        <div class="col-xs-12">
+          <label for="email">E-Mail</label>
+          <input
+            type="email"
+            id="email"
+            class="form-control"
+            formControlName="email"
+            name="email"
+            required
+            email/>
+        </div>
+      </div>
+    </form>
+    <form [formGroup]="signUpForm" (ngSubmit)="onSubmit()" *ngIf="!isLoading">
+      <div class="form-group">
+        <div class="col-xs-12">
+          <label for="username">Username</label>
+          <input
+            type="username"
+            id="username"
+            class="form-control"
+            formControlName="username"
+            name="username"
+            required/>
+        </div>
+        <div class="col-xs-12">
+          <label for="password">Password</label>
+          <input
+            type="text"
+            id="password"
+            class="form-control"
+            formControlName="password"
+            name="password"
+            required
+            minlength="6">
+        </div>
+      </div>
+      <br>
+      <div>
+        <button
+          type="submit"
+          class="btn btn-primary"
+          [disabled]="!signUpForm.valid">
+          {{ isLoginMode ? 'Login' : 'Sign Up'}}</button> |
+        <button
+          class="btn btn-primary"
+          type="button"
+          (click)="onSwithcMode()">
+          {{ isLoginMode ? 'Switch to SignUp' : 'Switch to Login'}}
+        </button>
+      </div>
+      <br>
+      <div class="row" *ngIf="!confirmUser">
+        <div class="col-xs-12 col-sm-10 col-md-6 cold-sm-offset-1 col-md-offset-3 text-center">
+          <button class="btn btn-default" (click)="onDoConfirm()">Confirm User</button>
+        </div>
+      </div>
+      <div class="row" *ngIf="confirmUser">
+        <div class="col-xs-12 col-sm-10 col-md-6 cold-sm-offset-1 col-md-offset-3">
+          <form [formGroup]="confirmForm" (ngSubmit)="onConfirm()" class="jumbotron text-center">
+            <div class="form-group">
+              <label
+                for="usrName"
+                class="control-label">Username</label>
+              <input
+                type="text"
+                id="usrName"
+                name="usrName"
+                class="form-control text-center"
+                formControlName="usrName"
+                required>
+            </div>
+            <div class="form-group">
+              <label
+                for="validationCode"
+                class="control-label">Validation Code</label>
+              <input
+                type="text"
+                id="validationCode"
+                name="validationCode"
+                class="form-control text-center"
+                formControlName="validationCode"
+                required>
+            </div>
+            <br>
+            <button class="btn btn-primary" type="submit" [disabled]="!confirmForm.valid">Confirm your Account</button>
+          </form>
+          <div class="loader" *ngIf="isLoading"></div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

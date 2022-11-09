@@ -1,0 +1,52 @@
+<header>
+  <nav class="navbar navbar-expand-lg navbar-light bg-white">
+    <div class="container-fluid">
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-mdb-toggle="collapse"
+        data-mdb-target="#navbarExample01"
+        aria-controls="navbarExample01"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <i class="fas fa-bars"></i>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarExample01">
+        <div class="container-fluid">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item active">
+              <a class="nav-link" aria-current="page" href="#">Home</a>
+            </li>
+            <li routerLinkActive="active" class="nav-item">
+              <a class="nav-link"
+                 routerLink="/User"
+                 href="#">Users</a>
+            </li>
+            <li routerLinkActive="active" class="nav-item">
+              <a class="nav-link"
+                 routerLink="/teams"
+                 href="#">Teams</a>
+            </li>
+            <li routerLinkActive="active" class="nav-item">
+              <a class="nav-link"
+                 routerLink="/experts"
+                 href="#">Experts</a>
+            </li>
+          </ul>
+        </div>
+        <div class="collapse navbar-collapse" id="navbarNavDropdown">
+          <div class="dropdown">
+            <a class="nav-link dropdown-toggle" href="#" type="label" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Account
+            </a>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+              <a class="dropdown-item">My Account</a>
+              <a class="dropdown-item">Authenticate</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
