@@ -77,7 +77,7 @@ export class AuthService {
   }
 
   signOut(){
-    let cognitoUser = userPool.getCurrentUser();
+    this.getAuthenticatedUser()?.signOut();
   }
 
   confirmUser(username: string, code: string) {
@@ -92,5 +92,32 @@ export class AuthService {
       }
       this.router.navigate(['/User']);
     });
+  }
+
+  getAuthenticatedUser(){
+    return userPool.getCurrentUser();
+  }
+
+  isLoggedIn(){
+    var isAuthenticated = false;
+
+    let poolData = {
+      UserPoolId: environment.cognitoUserPoolId,
+      ClientId: environment.cognitoAppClientId
+    };
+
+    var userPool = new CognitoUserPool(poolData);
+    var cognitoUser = userPool.getCurrentUser();
+
+    if(cognitoUser != null){
+      cognitoUser.getSession((err: any, session: any) => {
+        if (err) {
+          alert(err.message || JSON.stringify(err));
+        }
+        isAuthenticated = session.isValid();
+      })
+    }
+
+    return isAuthenticated;
   }
 }
