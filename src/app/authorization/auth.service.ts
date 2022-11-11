@@ -78,6 +78,7 @@ export class AuthService {
 
   signOut(){
     this.getAuthenticatedUser()?.signOut();
+    window.location.reload();
   }
 
   confirmUser(username: string, code: string) {

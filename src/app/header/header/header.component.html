@@ -38,11 +38,12 @@
         <div class="collapse navbar-collapse" id="navbarNavDropdown">
           <div class="dropdown">
             <a class="nav-link dropdown-toggle" href="#" type="label" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              Account
+              Account & Settings
             </a>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
               <a class="dropdown-item">My Account</a>
-              <a class="dropdown-item">Authenticate</a>
+              <a class="dropdown-item">Sign In</a>
+              <a class="dropdown-item" (click)="onLogout()">Sign Out</a>
             </div>
           </div>
         </div>
