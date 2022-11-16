@@ -17,6 +17,15 @@ export class HeaderComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  onHome(){
+    const authenticatedUser = this.authService.getAuthenticatedUser();
+    if(authenticatedUser){
+      this.router.navigate(['/User']);
+    } else {
+      this.router.navigate(['Authorization']);
+    }
+  }
+
   onLogout(){
     this.authService.signOut();
   }

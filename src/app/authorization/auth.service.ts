@@ -4,6 +4,8 @@ import {Router} from "@angular/router";
 import { environment } from 'src/environments/environment';
 import {CognitoUser, CognitoUserPool, AuthenticationDetails, CognitoUserAttribute} from 'amazon-cognito-identity-js';
 import { User } from '../user/user.model';
+import {TeamMember} from "../shared/TeamMember";
+import {ApiService} from "./api.service";
 
 
 var poolData = {
@@ -72,8 +74,10 @@ export class AuthService {
         },
       onFailure: (err) => {
           alert(err.message || JSON.stringify(err));
+          that.router.navigate(["/Authorization"]);
         },
     });
+
   }
 
   signOut(){
@@ -91,12 +95,28 @@ export class AuthService {
       if (err) {
         return;
       }
-      this.router.navigate(['/User']);
     });
+    window.location.reload();
   }
 
   getAuthenticatedUser(){
     return userPool.getCurrentUser();
+  }
+
+  getUserSession(){
+    let userSession : any;
+    const currentUser = userPool.getCurrentUser();
+
+    if(currentUser != null){
+      console.log('its not null');
+      currentUser.getSession((err: any, session: any) => {
+        if (err) {
+          alert(err.message || JSON.stringify(err));
+        }
+        userSession = session;
+      })
+    }
+    return userSession;
   }
 
   isLoggedIn(){

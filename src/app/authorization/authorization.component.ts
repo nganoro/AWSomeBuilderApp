@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {FormControl, FormGroup} from "@angular/forms";
 import {AuthService} from "./auth.service";
 import {Router} from "@angular/router";
-import {Observable} from "rxjs";
+import { TeamMember } from "../shared/TeamMember";
 
 @Component({
   selector: 'app-authorization',
@@ -12,55 +12,42 @@ import {Observable} from "rxjs";
 export class AuthorizationComponent implements OnInit {
   confirmUser = false;
   isLoginMode = true;
-  signUpForm: FormGroup;
   signInForm: FormGroup;
   confirmForm: FormGroup;
   isLoading: boolean = false;
-  // error: string = null;
 
   constructor(
     private router: Router,
     private authService: AuthService) { }
 
   ngOnInit(): void {
-    this.signUpForm = new FormGroup({
-      'email': new FormControl(),
-      'password': new FormControl(),
-      'username': new FormControl()
-    }),
     this.confirmForm = new FormGroup({
       'usrName': new FormControl(),
       'validationCode': new FormControl(),
     }),
     this.signInForm = new FormGroup({
-      'email': new FormControl()
+      'username': new FormControl(),
+      'password': new FormControl(),
     })
   }
 
-  onSwithcMode() {
-    this.isLoginMode = !this.isLoginMode;
-    if(this.isLoginMode){
-
-    }
+  switchToSignUp() {
+    this.router.navigate(['/signUp']);
   }
 
   onSubmit() {
-    if(!this.signUpForm.valid || !this.signInForm.valid){
+    console.log(this.signInForm);
+
+    if(!this.signInForm.valid){
       return;
     }
-    const email = this.signInForm.value.email;
-    const password = this.signUpForm.value.password;
-    const username = this.signUpForm.value.username;
-
     this.isLoading = true;
 
     if(this.isLoginMode){
+      const password = this.signInForm.value.password;
+      const username = this.signInForm.value.username;
       this.authService.signIn(username, password);
       console.log(username, password);
-    } else {
-      this.authService.signUp(username, email, password);
-      console.log(username, email, password);
-      this.isLoading = false;
     }
     this.onClearItem();
   }
@@ -71,11 +58,12 @@ export class AuthorizationComponent implements OnInit {
 
   onConfirm() {
     this.authService.confirmUser(this.confirmForm.value.usrName, this.confirmForm.value.validationCode);
+    alert('Confirmed!');
   }
 
   onClearItem() {
     this.isLoginMode = false;
-    this.signUpForm.reset();
+    this.isLoading = false;
     this.signInForm.reset();
   }
 

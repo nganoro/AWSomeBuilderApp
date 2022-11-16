@@ -12,6 +12,10 @@ import {ReactiveFormsModule} from "@angular/forms";
 import { LoadingSpinnerComponent } from './shared/loading-spinner/loading-spinner.component';
 import { TeamSearchComponent } from './teams/team-search/team-search.component';
 import { ExpertSearchComponent } from './experts/expert-search/expert-search.component';
+import { SignUpComponent } from './authorization/sign-up/sign-up.component';
+import {AuthService} from "./authorization/auth.service";
+import {ApiService} from "./authorization/api.service";
+import { UserEditComponent } from './user/user-edit/user-edit.component';
 
 
 @NgModule({
@@ -23,6 +27,8 @@ import { ExpertSearchComponent } from './experts/expert-search/expert-search.com
     LoadingSpinnerComponent,
     TeamSearchComponent,
     ExpertSearchComponent,
+    SignUpComponent,
+    UserEditComponent,
   ],
     imports: [
         BrowserModule,
@@ -31,7 +37,10 @@ import { ExpertSearchComponent } from './experts/expert-search/expert-search.com
         HttpClientModule,
         FormsModule,
     ],
-  providers: [],
+  providers: [
+    AuthService,
+    ApiService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
