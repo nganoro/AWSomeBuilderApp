@@ -36,8 +36,6 @@ export class AuthorizationComponent implements OnInit {
   }
 
   onSubmit() {
-    console.log(this.signInForm);
-
     if(!this.signInForm.valid){
       return;
     }
@@ -47,7 +45,6 @@ export class AuthorizationComponent implements OnInit {
       const password = this.signInForm.value.password;
       const username = this.signInForm.value.username;
       this.authService.signIn(username, password);
-      console.log(username, password);
     }
     this.onClearItem();
   }
@@ -59,11 +56,12 @@ export class AuthorizationComponent implements OnInit {
   onConfirm() {
     this.authService.confirmUser(this.confirmForm.value.usrName, this.confirmForm.value.validationCode);
     alert('Confirmed!');
+    this.router.navigate(['/User']);
   }
 
   onClearItem() {
     this.isLoginMode = false;
-    this.isLoading = false;
+    // this.isLoading = false;
     this.signInForm.reset();
   }
 

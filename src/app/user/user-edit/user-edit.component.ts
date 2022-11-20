@@ -24,8 +24,11 @@ export class UserEditComponent implements OnInit {
       'service': new FormControl(),
       'proficiency': new FormControl(),
       'firstName': new FormControl(),
-      'lastName': new FormControl()
+      'lastName': new FormControl(),
+      'userName': new FormControl(),
     })
+
+    this.userNameExtenstion();
   }
 
   onSubmit(){
@@ -40,10 +43,17 @@ export class UserEditComponent implements OnInit {
       this.profileForm.value.service,
       this.profileForm.value.proficiency,
       this.profileForm.value.firstName,
-      this.profileForm.value.lastName
+      this.profileForm.value.lastName,
+      this.userNameExtenstion()
     );
 
+    console.log(newTeamMemeber);
+
     this.apiService.onStoreData(newTeamMemeber);
+    this.profileForm.reset();
   }
 
+  userNameExtenstion(): string{
+    return this.profileForm.value.userName + '_' + Math.random() + '';
+  }
 }

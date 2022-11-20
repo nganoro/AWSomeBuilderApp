@@ -3,7 +3,7 @@
     <div *ngIf="isLoading" style="text-align: center;">
       <app-loading-spinner></app-loading-spinner>
     </div>
-    <form [formGroup]="signInForm" (ngSubmit)="onSubmit()">
+    <form [formGroup]="signInForm" (ngSubmit)="onSubmit()" *ngIf="!isLoading">
       <div class="form-group" >
         <div class="col-xs-12" >
           <label for="username">Username</label>
@@ -29,7 +29,7 @@
       </div>
     </form>
     <br>
-    <div>
+    <div *ngIf="!isLoading">
       <button
         type="submit"
         class="btn btn-primary"

@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {AuthService} from "../../authorization/auth.service";
+import {ApiService} from "../../authorization/api.service";
+import {TeamMember} from "../../shared/TeamMember";
 
 @Component({
   selector: 'app-user',
@@ -8,16 +10,11 @@ import {AuthService} from "../../authorization/auth.service";
 })
 export class UserComponent implements OnInit {
 
-  constructor(
-    private authService: AuthService) { }
+  constructor() { }
 
   ngOnInit(): void {
   }
 
   onEditPage(){}
-
-  check(){
-    console.log(this.authService.getUserSession());
-  }
 
 }

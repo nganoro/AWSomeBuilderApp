@@ -16,7 +16,7 @@ import { SignUpComponent } from './authorization/sign-up/sign-up.component';
 import {AuthService} from "./authorization/auth.service";
 import {ApiService} from "./authorization/api.service";
 import { UserEditComponent } from './user/user-edit/user-edit.component';
-
+import { UserDetailComponent } from './user/user-detail/user-detail.component';
 
 @NgModule({
   declarations: [
@@ -29,6 +29,7 @@ import { UserEditComponent } from './user/user-edit/user-edit.component';
     ExpertSearchComponent,
     SignUpComponent,
     UserEditComponent,
+    UserDetailComponent,
   ],
     imports: [
         BrowserModule,

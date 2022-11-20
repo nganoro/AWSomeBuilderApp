@@ -18,6 +18,8 @@ var userPool = new CognitoUserPool(poolData);
 @Injectable({providedIn: 'root'})
 export class AuthService {
 
+  unique_Username = '';
+
   constructor(
     private http: HttpClient,
     private router: Router) {
@@ -49,6 +51,7 @@ export class AuthService {
         return;
       }
       this.router.navigate(['/User']);
+      this.uniqueUsername(user.username);
     });
   }
 
@@ -73,9 +76,10 @@ export class AuthService {
           that.router.navigate(["/User"]);
         },
       onFailure: (err) => {
-          alert(err.message || JSON.stringify(err));
-          that.router.navigate(["/Authorization"]);
-        },
+        alert(err.message || JSON.stringify(err));
+        window.location.reload();
+        that.router.navigate(["/Authorization"]);
+       },
     });
 
   }
@@ -108,7 +112,6 @@ export class AuthService {
     const currentUser = userPool.getCurrentUser();
 
     if(currentUser != null){
-      console.log('its not null');
       currentUser.getSession((err: any, session: any) => {
         if (err) {
           alert(err.message || JSON.stringify(err));
@@ -141,4 +144,13 @@ export class AuthService {
 
     return isAuthenticated;
   }
+
+  uniqueUsername(user_name: string){
+    this.unique_Username = user_name + '_' + Math.random() + '';
+  }
+
+  getUniqueUsername(){
+    return this.unique_Username;
+  }
+
 }

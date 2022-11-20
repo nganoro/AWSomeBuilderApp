@@ -8,14 +8,28 @@ import {AuthService} from "./authorization/auth.service";
 import {AuthGuardGuard} from "./authorization/auth/auth-guard.guard";
 import {SignUpComponent} from "./authorization/sign-up/sign-up.component";
 import {UserEditComponent} from "./user/user-edit/user-edit.component";
+import {UserDetailComponent} from "./user/user-detail/user-detail.component";
 
 const appRoutes: Routes = [
   { path: '', redirectTo: '/Authorization', pathMatch: 'full'},
   { path: 'Authorization', component: AuthorizationComponent},
-  { path: 'User', component: UserComponent,canActivate: [AuthGuardGuard]},
+  { path: 'User',
+    component: UserComponent,
+    canActivate: [AuthGuardGuard],
+    children: [
+      { path: '',
+        component: UserDetailComponent,
+      },
+      { path: ':id',
+        component: UserDetailComponent,
+      },
+      { path: ':id/edit',
+        component: UserEditComponent,
+      }
+      ]},
   { path: 'userEdit', component: UserEditComponent,canActivate: [AuthGuardGuard]},
-  { path: 'teams', component: TeamSearchComponent},
-  { path: 'experts', component: ExpertSearchComponent},
+  { path: 'teams', component: TeamSearchComponent, canActivate: [AuthGuardGuard]},
+  { path: 'experts', component: ExpertSearchComponent, canActivate: [AuthGuardGuard]},
   { path: 'signUp', component: SignUpComponent}
 ]
 
