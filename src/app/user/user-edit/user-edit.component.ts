@@ -27,8 +27,6 @@ export class UserEditComponent implements OnInit {
       'lastName': new FormControl(),
       'userName': new FormControl(),
     })
-
-    this.userNameExtenstion();
   }
 
   onSubmit(){
@@ -44,16 +42,12 @@ export class UserEditComponent implements OnInit {
       this.profileForm.value.proficiency,
       this.profileForm.value.firstName,
       this.profileForm.value.lastName,
-      this.userNameExtenstion()
+      this.profileForm.value.userName
     );
 
     console.log(newTeamMemeber);
 
     this.apiService.onStoreData(newTeamMemeber);
     this.profileForm.reset();
-  }
-
-  userNameExtenstion(): string{
-    return this.profileForm.value.userName + '_' + Math.random() + '';
   }
 }

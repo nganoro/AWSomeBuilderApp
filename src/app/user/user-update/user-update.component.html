@@ -1,0 +1,96 @@
+<div class="row">
+  <div class="col-xs-12 pt-5">
+    <form [formGroup]="updateForm" (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <div class="col-xs-12">
+          <label for="firstName">First Name</label>
+          <input
+            type="text"
+            id="firstName"
+            class="form-control"
+            formControlName="firstName"
+            name="firstName"
+            required>
+        </div>
+        <div class="col-xs-12">
+          <label for="lastName">Last Name</label>
+          <input
+            type="text"
+            id="lastName"
+            class="form-control"
+            formControlName="lastName"
+            name="lastName"
+            required>
+        </div>
+        <div class="col-xs-12">
+          <label for="email">E-Mail</label>
+          <input
+            type="email"
+            id="email"
+            class="form-control"
+            formControlName="email"
+            name="email"
+            required
+            email/>
+        </div>
+        <div class="col-xs-12">
+          <label for="userName">Username</label>
+          <input
+            type="text"
+            id="userName"
+            class="form-control"
+            formControlName="userName"
+            name="userName"
+            required>
+        </div>
+        <div class="col-xs-12">
+          <label for="title">Title</label>
+          <input
+            type="title"
+            id="title"
+            class="form-control"
+            formControlName="title"
+            name="title"
+            required/>
+        </div>
+        <div class="col-xs-12">
+          <label for="team">Team</label>
+          <input
+            type="team"
+            id="team"
+            class="form-control"
+            formControlName="team"
+            name="team"
+            required/>
+        </div>
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <label class="input-group-text" for="service">Services</label>
+          </div>
+          <select class="form-select" formControlName="service"name="service" id="service" required>
+            <option value="s3">S3</option>
+            <option value="dynamoDB">DynamoDB</option>
+            <option value="lambda">Lambda</option>
+            <option value="api">API</option>
+            <option value="cloudfront">CloudFront</option>
+          </select>
+
+          <div class="input-group-prepend">
+            <label class="input-group-text" for="proficiency">Proficiency</label>
+          </div>
+          <select class="form-select" formControlName="proficiency"name="proficiency" id="proficiency" required>
+            <option value="beginner">Beginner</option>
+            <option value="intermediate">Intermediate</option>
+            <option value="expert">Expert</option>
+          </select>
+        </div>
+        <br>
+        <div>
+          <button type="submit"
+                  class="btn btn-primary">Update Profile</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+

@@ -10,9 +10,12 @@ import {TeamMember} from "../../shared/TeamMember";
 })
 export class UserComponent implements OnInit {
 
-  constructor() { }
+  public username = '';
+
+  constructor(private apiService: ApiService) { }
 
   ngOnInit(): void {
+    this.username = this.apiService.getUserName();
   }
 
   onEditPage(){}

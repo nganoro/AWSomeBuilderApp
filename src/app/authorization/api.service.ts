@@ -1,7 +1,7 @@
 import {Injectable} from "@angular/core";
 import {HttpClient, HttpHeaders, HttpParams, HttpParamsOptions} from "@angular/common/http";
 import { AuthService} from "./auth.service";
-import {TeamMember} from "../shared/TeamMember";
+import { TeamMember } from "../shared/TeamMember";
 import {map, Observable, tap} from "rxjs";
 
 @Injectable()
@@ -37,10 +37,11 @@ export class ApiService {
     return this.http.post(
       'https://jwqaleasy0.execute-api.us-east-1.amazonaws.com/prod/hello',
       JSON.stringify(member),
-      {headers: headers}).subscribe({
+      {headers: headers})
+      .subscribe({
             next: response => {console.log(response)},
             error: error => {console.log(error)}
-            });
+      });
   }
 
 
@@ -65,40 +66,67 @@ export class ApiService {
             return resultArray;
           })
       );
-
     }
 
-    fetchSingleData(){
+  fetchSingleData(memberId: string){
 
-      const currUser = this.authService.getAuthenticatedUser();
-      let memberId: string = currUser?.getUsername()! || '';
-      console.log(memberId);
+    // let memberId = this.getUserName();
 
-      let params = new HttpParams().set('User_Id', memberId);
+    let params = new HttpParams().set('User_Id', memberId);
 
-      const userSession = this.authService.getUserSession();
-      const token = userSession.getIdToken().getJwtToken();
+    const userSession = this.authService.getUserSession();
+    const token = userSession.getIdToken().getJwtToken();
 
-      let headers = new HttpHeaders();
-      headers = headers.append('Content-Type', 'application/json');
-      headers = headers.append('Authorization', token);
+    let headers = new HttpHeaders();
+    headers = headers.append('Content-Type', 'application/json');
+    headers = headers.append('Authorization', token);
 
-      return this.http.get<TeamMember>('https://jwqaleasy0.execute-api.us-east-1.amazonaws.com/prod/experts',
-        {
-          headers: headers,
-          params: params,
+    return this.http.get<any>('https://jwqaleasy0.execute-api.us-east-1.amazonaws.com/prod/experts',
+      {
+        headers: headers,
+        params: params,
+      })
+      .pipe(
+        map((result) => {
+          result.Items.forEach((item:any)=>{
+            this.singleTeamMember = item;
+          });
+          return this.singleTeamMember;
         })
-        .pipe(
-          map((result) => {
-            this.singleTeamMember = result;
-            return this.singleTeamMember;
-          })
-        );
-    }
+      );
+  }
 
-  userNameExtenstion(){
-    const userSession = this.authService.getAuthenticatedUser();
-    // return this.officialUsesssrName = this.profileForm.value.firstName + '_' + userSession?.getUsername();
+  updateTeamMember(member: TeamMember, user_id: string, proficiency: string){
+    console.log(member);
+
+    let params = new HttpParams()
+      .set('User_Id', user_id)
+      .set('proficiency', proficiency);
+
+    const userSession = this.authService.getUserSession();
+    const token = userSession.getIdToken().getJwtToken();
+
+    let headers = new HttpHeaders();
+    headers = headers.append('Content-Type', 'application/json');
+    headers = headers.append('Authorization', token);
+
+    return this.http.put(
+      'https://jwqaleasy0.execute-api.us-east-1.amazonaws.com/prod/update',
+      JSON.stringify(member),
+      {
+        headers: headers,
+        params: params,
+      })
+      .subscribe({
+        next: response => {console.log(response)},
+        error: error => {console.log(error)}
+      });
+  }
+
+  getUserName(){
+    const currUser = this.authService.getAuthenticatedUser();
+    let memberId: string = currUser?.getUsername()! || '';
+    return memberId;
   }
 }
 
