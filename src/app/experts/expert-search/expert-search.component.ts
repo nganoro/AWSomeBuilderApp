@@ -54,7 +54,18 @@ export class ExpertSearchComponent implements OnInit {
             }
           }
     } else {
-
+      this.tempApiArray = this.teamMember.filter(
+        (e: any)=> e.proficiency != event.target.value);
+      this.newArray = [];
+      this.teamMember = [];
+      this.newArray.push(this.tempApiArray);
+      for(let i=0; i<this.newArray.length; i++){
+        var firstFilter = this.newArray[i];
+        for(let i=0; i<firstFilter.length; i++){
+          var filterObj = firstFilter[i];
+          this.teamMember.push(filterObj);
+        }
+      }
     }
 
   }
