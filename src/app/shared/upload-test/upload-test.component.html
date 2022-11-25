@@ -3,5 +3,9 @@
   <button (click)="submit()" class="myButton">Upload File</button>
 
   <p> Please Select file</p>
+  <button (click)="getProfilePic()" class="myButton">Fetch File</button>
+  <p>
+    <img [src]="userProfilePic">
+  </p>
 
 </div>

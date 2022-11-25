@@ -14,7 +14,8 @@ export class UploadTestComponent implements OnInit {
   toFile: any;
   fileUploadUrl: string;
   fileFetchUrl: string;
-  userProfileName = '';
+  userProfilePicName = '';
+  userProfilePic: string;
 
   constructor(
     private uploadService: UploadService,
@@ -23,13 +24,26 @@ export class UploadTestComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.getAvatarName()
-    this.uploadUrl();
+    this.getAvatarName();
+    this.fetchUrl();
+    // this.uploadUrl();
+    // this.uploadService.fileFetch(this.userProfilePicName, this.fileFetchUrl);
   }
 
   submit() {
     const file = this.toFile.item(0);
-    this.uploadService.fileUpload(file, this.fileUploadUrl);
+    this.uploadService.uploadProfilePic(file, this.fileUploadUrl);
+  }
+
+  getProfilePic(){
+    this.uploadService.getProfilePic(this.fileFetchUrl).subscribe({
+      next: (response: any) => {
+        this.userProfilePic = response;
+      },
+      error: error => {
+        console.log(error)
+      }
+    });
   }
 
   onChange(event: Event) {
@@ -39,24 +53,7 @@ export class UploadTestComponent implements OnInit {
 
   getAvatarName(){
     const user = this.authService.getAuthenticatedUser()?.getUsername();
-    this.userProfileName = user!;
-  }
-
-  getProfilePic(fileName: string){
-
-    let params = new HttpParams().set('key', fileName);
-
-    return this.http.get<any>(this.fileUploadUrl,
-      {
-        params: params
-      })
-      .pipe(
-        map((result) => {
-          result.Items.forEach((item:any)=>{
-            console.log(item);
-          });
-        })
-      );
+    this.userProfilePicName = user!;
   }
 
   uploadUrl(){
@@ -72,7 +69,15 @@ export class UploadTestComponent implements OnInit {
   }
 
   fetchUrl(){
-
+    this.uploadService.getFetchSignedUrl().subscribe({
+      next: (response: any) => {
+        this.fileFetchUrl = response.presigned_url;
+        console.log(this.fileFetchUrl);
+      },
+      error: error => {
+        console.log(error)
+      }
+    });
   }
 
 

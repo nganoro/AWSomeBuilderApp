@@ -19,7 +19,40 @@ export class UploadService {
   ngOnInit(){
   }
 
-  fileUpload(file: any, url: string) {
+  getProfilePic(url: string){
+    // let params = new HttpParams().set('key', fileName);
+
+    return this.http.get<any>(url)
+      .pipe(
+        map((result) => {
+          result.Items.forEach((item:any)=>{
+            console.log(item);
+          });
+        })
+      );
+  }
+
+  uploadProfilePic(file: any, url: string) {
+    console.log(file);
+
+    const contentType = file.type;
+
+    let headers = new HttpHeaders();
+    headers = headers.append('Content-Type', contentType);
+
+    console.log(url);
+
+    return this.http.put(
+      url,
+      file,
+      {headers: headers})
+      .subscribe({
+        next: response => {console.log(response)},
+        error: error => {console.log(error)}
+      });
+  }
+
+  fileFetch(file: any, url: string) {
     console.log(file);
 
     const contentType = file.type;
@@ -43,15 +76,26 @@ export class UploadService {
     const userSession = this.authService.getUserSession();
     const token = userSession.getIdToken().getJwtToken();
 
-    // let params = new HttpParams().set('key', profileName);
+    let headers = new HttpHeaders();
+    headers = headers.append('Authorization', token);
+
+    return this.http.get<any>('https://jwqaleasy0.execute-api.us-east-1.amazonaws.com/prod/hello/post',
+      {
+        headers: headers
+      });
+  }
+
+  //dynamically pass the name of the file you want to retrieve
+  getFetchSignedUrl(){
+    const userSession = this.authService.getUserSession();
+    const token = userSession.getIdToken().getJwtToken();
 
     let headers = new HttpHeaders();
     headers = headers.append('Authorization', token);
 
-    return this.http.get<any>('https://jwqaleasy0.execute-api.us-east-1.amazonaws.com/prod/presignedURL',
+    return this.http.get<any>('https://jwqaleasy0.execute-api.us-east-1.amazonaws.com/prod/hello/get',
       {
         headers: headers
-        // params: params
       });
   }
 
