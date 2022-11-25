@@ -12,6 +12,7 @@ import {Observable, Subscription} from "rxjs";
 export class ExpertSearchComponent implements OnInit {
 
   public teamMember: TeamMember[] = [];
+  searchText: any;
 
   constructor(
     private apiService: ApiService,
@@ -19,17 +20,42 @@ export class ExpertSearchComponent implements OnInit {
 
   ngOnInit(): void {
     this.retrieveData();
+    console.log(this.teamMember);
   }
 
+  originalArrays: any = [];
   retrieveData(){
     this.apiService.fetchAllData().subscribe({
         next: (response) => {
-            this.teamMember = response;
-            console.log(this.teamMember);
+            this.teamMember = response; // if api is chosen, get what origianlArray gives
+            this.originalArrays = response;// if api is chosen, remove everything else but keep api, then pass it to teamMember
+            console.log(this.originalArrays);
         },
         error: error => {
           console.log(error)
         }
       });
+  }
+
+  tempApiArray: any = [];
+  newArray: any = [];
+  onChange(event: any){
+    if (event.target.checked){
+      console.log(event.target.value);
+      this.tempApiArray = this.originalArrays.filter(
+        (e: any)=> e.proficiency == event.target.value);
+          this.teamMember = [];
+          this.newArray.push(this.tempApiArray);
+          for(let i=0; i<this.newArray.length; i++){
+            var firstFilter = this.newArray[i];
+            for(let i=0; i<firstFilter.length; i++){
+              var filterObj = firstFilter[i];
+              this.teamMember.push(filterObj);
+            }
+          }
+    } else {
+
+    }
+
   }
 }

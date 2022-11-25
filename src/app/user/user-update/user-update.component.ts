@@ -4,6 +4,8 @@ import {Subscription} from "rxjs";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {ApiService} from "../../authorization/api.service";
 import {TeamMember} from "../../shared/TeamMember";
+import {UploadService} from "../../shared/upload.service";
+import {AuthService} from "../../authorization/auth.service";
 
 @Component({
   selector: 'app-user-update',
@@ -12,17 +14,22 @@ import {TeamMember} from "../../shared/TeamMember";
 })
 export class UserUpdateComponent implements OnInit {
 
-  public oldProficiency: string;
+  toFile: any;
+  oldProficiency: string;
   updateForm: FormGroup;
   authenticatedUserName = '';
+  userProfilePicName = '';
   routeParamObs: Subscription;
+  fileUploadUrl: string;
 
   constructor(
     private activatedRoute: ActivatedRoute,
-    private apiService: ApiService) {}
+    private apiService: ApiService,
+    private uploadService: UploadService,
+    private authService: AuthService) {}
 
   ngOnInit(): void {
-
+    this.getAvatarName();
     this.updateForm = new FormGroup({
       'email': new FormControl( ),
       'title': new FormControl( ),
@@ -39,6 +46,13 @@ export class UserUpdateComponent implements OnInit {
       console.log(this.authenticatedUserName)
       this.initForm();
     })
+
+    this.uploadUrl();
+  }
+
+  getAvatarName(){
+    const user = this.authService.getAuthenticatedUser()?.getUsername();
+    this.userProfilePicName = user!;
   }
 
   private initForm(){
@@ -70,6 +84,9 @@ export class UserUpdateComponent implements OnInit {
   }
 
   onSubmit(){
+    const file = this.toFile.item(0);
+    this.uploadService.uploadProfilePic(file, this.fileUploadUrl);
+
     const newTeamMemeber = new TeamMember(
       this.updateForm.value.email,
       this.updateForm.value.title,
@@ -83,5 +100,21 @@ export class UserUpdateComponent implements OnInit {
     this.apiService.updateTeamMember(newTeamMemeber, this.authenticatedUserName, this.oldProficiency);
   }
 
+  onChange(event: Event) {
+    // @ts-ignore
+    this.toFile = event.target.files;
+  }
+
+  uploadUrl(){
+    this.uploadService.getUploadSignedUrl(this.userProfilePicName).subscribe({
+      next: (response: any) => {
+        this.fileUploadUrl = response.presigned_url;
+        console.log(this.fileUploadUrl);
+      },
+      error: error => {
+        console.log(error)
+      }
+    });
+  }
 
 }

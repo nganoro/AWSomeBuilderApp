@@ -19,6 +19,7 @@ import { UserDetailComponent } from './user/user-detail/user-detail.component';
 import { UserStartComponent } from './user/user-start/user-start.component';
 import { UserUpdateComponent } from './user/user-update/user-update.component';
 import { UploadTestComponent } from './shared/upload-test/upload-test.component';
+import {Ng2SearchPipeModule} from "ng2-search-filter";
 
 @NgModule({
   declarations: [
@@ -42,6 +43,7 @@ import { UploadTestComponent } from './shared/upload-test/upload-test.component'
         ReactiveFormsModule,
         HttpClientModule,
         FormsModule,
+        Ng2SearchPipeModule,
     ],
   providers: [
     AuthService,

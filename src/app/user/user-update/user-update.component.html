@@ -84,7 +84,10 @@
             <option value="expert">Expert</option>
           </select>
         </div>
-        <br>
+        <div class="mb-3">
+          <label for="profilePic">Profile Pic</label>
+          <input class="form-control" type="file" id="profilePic" (change)="onChange($event)">
+        </div>
         <div>
           <button type="submit"
                   class="btn btn-primary">Update Profile</button>
