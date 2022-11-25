@@ -26,7 +26,7 @@ export class UploadTestComponent implements OnInit {
   ngOnInit(): void {
     this.getAvatarName();
     this.fetchUrl();
-    // this.uploadUrl();
+    this.uploadUrl();
     // this.uploadService.fileFetch(this.userProfilePicName, this.fileFetchUrl);
   }
 
@@ -36,14 +36,15 @@ export class UploadTestComponent implements OnInit {
   }
 
   getProfilePic(){
-    this.uploadService.getProfilePic(this.fileFetchUrl).subscribe({
-      next: (response: any) => {
-        this.userProfilePic = response;
-      },
-      error: error => {
-        console.log(error)
-      }
-    });
+    // this.uploadService.getProfilePic(this.fileFetchUrl).subscribe({
+    //   next: (response: any) => {
+    //     this.userProfilePic = response;
+    //   },
+    //   error: error => {
+    //     console.log(error)
+    //   }
+    // });
+    this.userProfilePic = this.fileFetchUrl;
   }
 
   onChange(event: Event) {
