@@ -36,14 +36,6 @@ export class UploadTestComponent implements OnInit {
   }
 
   getProfilePic(){
-    // this.uploadService.getProfilePic(this.fileFetchUrl).subscribe({
-    //   next: (response: any) => {
-    //     this.userProfilePic = response;
-    //   },
-    //   error: error => {
-    //     console.log(error)
-    //   }
-    // });
     this.userProfilePic = this.fileFetchUrl;
   }
 

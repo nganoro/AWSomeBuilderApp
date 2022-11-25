@@ -75,15 +75,12 @@ export class UserUpdateComponent implements OnInit {
       this.updateForm.value.title,
       this.updateForm.value.team,
       this.updateForm.value.service,
-      this.updateForm.value.proficiency,
+      this.oldProficiency,
       this.updateForm.value.firstName,
       this.updateForm.value.lastName,
       this.updateForm.value.userName
     );
-    console.log(newTeamMemeber);
-    console.log(this.oldProficiency);
-    const result = this.apiService.updateTeamMember(newTeamMemeber, this.authenticatedUserName, this.oldProficiency);
-    console.log(result);
+    this.apiService.updateTeamMember(newTeamMemeber, this.authenticatedUserName, this.oldProficiency);
   }
 
 

@@ -25,8 +25,6 @@ export class ApiService {
 
   onStoreData(member: TeamMember) {
 
-    console.log(member);
-
     const userSession = this.authService.getUserSession();
     const token = userSession.getIdToken().getJwtToken();
 
