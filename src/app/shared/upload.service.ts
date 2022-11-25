@@ -72,30 +72,36 @@ export class UploadService {
       });
   }
 
-  getUploadSignedUrl(){
+  getUploadSignedUrl(fileName: string){
     const userSession = this.authService.getUserSession();
     const token = userSession.getIdToken().getJwtToken();
+
+    let params = new HttpParams().set('fileName', fileName);
 
     let headers = new HttpHeaders();
     headers = headers.append('Authorization', token);
 
     return this.http.get<any>('https://jwqaleasy0.execute-api.us-east-1.amazonaws.com/prod/hello/post',
       {
-        headers: headers
+        headers: headers,
+        params: params
       });
   }
 
   //dynamically pass the name of the file you want to retrieve
-  getFetchSignedUrl(){
+  getFetchSignedUrl(fileName: string){
     const userSession = this.authService.getUserSession();
     const token = userSession.getIdToken().getJwtToken();
+
+    let params = new HttpParams().set('fileName', fileName);
 
     let headers = new HttpHeaders();
     headers = headers.append('Authorization', token);
 
     return this.http.get<any>('https://jwqaleasy0.execute-api.us-east-1.amazonaws.com/prod/hello/get',
       {
-        headers: headers
+        headers: headers,
+        params: params
       });
   }
 

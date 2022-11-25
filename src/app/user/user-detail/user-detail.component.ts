@@ -50,7 +50,7 @@ export class UserDetailComponent implements OnInit {
   }
 
   fetchUrl(){
-    this.uploadService.getFetchSignedUrl().subscribe({
+    this.uploadService.getFetchSignedUrl(this.userName).subscribe({
       next: (response: any) => {
         this.userProfilePic = response.presigned_url;
       },
