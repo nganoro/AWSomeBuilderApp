@@ -13,6 +13,7 @@ import {UserStartComponent} from "./user/user-start/user-start.component";
 import {UserUpdateComponent} from "./user/user-update/user-update.component";
 import {UploadTestComponent} from "./shared/upload-test/upload-test.component";
 import {TeamsDetailComponent} from "./teams/teams-detail/teams-detail.component";
+import {TeamStartComponent} from "./teams/team-start/team-start.component";
 
 const appRoutes: Routes = [
   { path: '', redirectTo: '/Authorization', pathMatch: 'full'},
@@ -39,6 +40,9 @@ const appRoutes: Routes = [
     component: TeamSearchComponent,
     canActivate: [AuthGuardGuard],
     children: [
+      { path: '',
+        component: TeamStartComponent,
+      },
       { path: ':id',
         component: TeamsDetailComponent,
       },

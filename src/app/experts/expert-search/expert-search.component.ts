@@ -51,7 +51,6 @@ export class ExpertSearchComponent implements OnInit {
             }
           }
     } else {
-      console.log(event.target.checked)
       this.tempApiArray = this.teamMember.filter(
         (e: any)=> e.proficiency != event.target.value);
       this.newArray = [];
@@ -62,7 +61,6 @@ export class ExpertSearchComponent implements OnInit {
         for(let i=0; i<firstFilter.length; i++){
           var filterObj = firstFilter[i];
           this.teamMember.push(filterObj);
-          console.log(this.teamMember);
         }
       }
     }

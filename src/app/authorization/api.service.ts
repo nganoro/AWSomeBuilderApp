@@ -71,8 +71,6 @@ export class ApiService {
 
   fetchSingleData(memberId: string){
 
-    // let memberId = this.getUserName();
-
     let params = new HttpParams().set('User_Id', memberId);
 
     const userSession = this.authService.getUserSession();
@@ -98,7 +96,6 @@ export class ApiService {
   }
 
   updateTeamMember(member: TeamMember, user_id: string, proficiency: string){
-    console.log(member);
 
     let params = new HttpParams()
       .set('User_Id', user_id)

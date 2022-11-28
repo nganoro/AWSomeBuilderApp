@@ -2,18 +2,14 @@
   <div class="row d-flex justify-content-center align-items-center h-100">
     <div class="col col-xl-10">
       <div class="card mb-5" style="border-radius: 15px;">
-        <div class="card-body p-4">
+        <div class="card-body p-4" *ngIf="currentTeam">
           <h3 class="mb-3">{{currentTeam.User_Id}}</h3>
-<!--          <p class="small mb-0"><i class="far fa-star fa-lg"></i> <span class="mx-2">|</span>-->
-<!--            <strong>MDBootstrap</strong>-->
-<!--            Created by-->
-<!--             on 11 April , 2021</p>-->
           <div class="card-footer tab-card-header">
             <ul class="nav nav-tabs card-header-tabs" id="myTab" role="tablist">
               <li class="nav-item">
                 <a class="nav-link" id="one-tab" data-toggle="tab" href="#one" role="tab" aria-controls="One" aria-selected="true">Bio</a>
               </li>
-              <li class="nav-item">
+              <li class="nav-item">tea
                 <a class="nav-link" id="two-tab" data-toggle="tab" href="#two" role="tab" aria-controls="Two" aria-selected="false">Tenets</a>
               </li>
               <li class="nav-item">
