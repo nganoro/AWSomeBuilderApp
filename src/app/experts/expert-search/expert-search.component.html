@@ -40,7 +40,7 @@
     <li>
       <a class="dropdown-item" href="#">
         <div class="form-check">
-          <input (change)="onChange($event)" class="form-check-input" type="checkbox" value="intermediate" id="intermediateId"/>
+          <input (change)="onChange($event)" class="form-check-input" type="checkbox" value="Intermediate" id="intermediateId"/>
           <label class="form-check-label" for="intermediateId">Intermediate</label>
         </div>
       </a>
@@ -48,7 +48,7 @@
     <li>
       <a class="dropdown-item" href="#">
         <div class="form-check">
-          <input (change)="onChange($event)" class="form-check-input" type="checkbox" value="expert" id="expertId"/>
+          <input (change)="onChange($event)" class="form-check-input" type="checkbox" value="Expert" id="expertId"/>
           <label class="form-check-label" for="expertId">expert</label>
         </div>
       </a>
@@ -56,8 +56,16 @@
     <li>
       <a class="dropdown-item" href="#">
         <div class="form-check">
-          <input (change)="onChange($event)" class="form-check-input" type="checkbox" value="beginner" id="beginnerId"/>
+          <input (change)="onChange($event)" class="form-check-input" type="checkbox" value="Beginner" id="beginnerId"/>
           <label class="form-check-label" for="beginnerId">beginner</label>
+        </div>
+      </a>
+    </li>
+    <li><hr class="dropdown-divider" /></li>
+    <li>
+      <a class="dropdown-item">
+        <div class="button">
+          <a class="dropdown-item" (click)="resetFilter()">Reset</a>
         </div>
       </a>
     </li>

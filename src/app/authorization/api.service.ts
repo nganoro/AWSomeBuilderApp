@@ -3,6 +3,7 @@ import {HttpClient, HttpHeaders, HttpParams, HttpParamsOptions} from "@angular/c
 import { AuthService} from "./auth.service";
 import { TeamMember } from "../shared/TeamMember";
 import {map, Observable, tap} from "rxjs";
+import {Teams} from "../shared/Teams";
 
 @Injectable()
 export class ApiService {
@@ -17,6 +18,8 @@ export class ApiService {
 
   public teamMember: TeamMember[] = [];
   public singleTeamMember: TeamMember;
+  singleTeam: Teams;
+  teamArray: Teams[] = [];
 
   getTeam(){
     console.log(this.teamMember);
@@ -125,6 +128,34 @@ export class ApiService {
     const currUser = this.authService.getAuthenticatedUser();
     let memberId: string = currUser?.getUsername()! || '';
     return memberId;
+  }
+
+  fetchSingleTeam(team: string){
+    let uppercaseTeam = team.toUpperCase();
+
+    let params = new HttpParams().set('User_Id', uppercaseTeam);
+
+    const userSession = this.authService.getUserSession();
+    const token = userSession.getIdToken().getJwtToken();
+
+    let headers = new HttpHeaders();
+    headers = headers.append('Content-Type', 'application/json');
+    headers = headers.append('Authorization', token);
+
+    return this.http.get<any>('https://jwqaleasy0.execute-api.us-east-1.amazonaws.com/prod/teams',
+      {
+        headers: headers,
+        params: params,
+      })
+      .pipe(
+        map((result) => {
+          console.log(result);
+          result.Items.forEach((item:any)=>{
+            this.singleTeam = item;
+          });
+          return this.singleTeam;
+        })
+      );
   }
 }
 

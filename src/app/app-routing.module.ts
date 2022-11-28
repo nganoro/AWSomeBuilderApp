@@ -12,6 +12,7 @@ import {UserDetailComponent} from "./user/user-detail/user-detail.component";
 import {UserStartComponent} from "./user/user-start/user-start.component";
 import {UserUpdateComponent} from "./user/user-update/user-update.component";
 import {UploadTestComponent} from "./shared/upload-test/upload-test.component";
+import {TeamsDetailComponent} from "./teams/teams-detail/teams-detail.component";
 
 const appRoutes: Routes = [
   { path: '', redirectTo: '/Authorization', pathMatch: 'full'},
@@ -34,7 +35,14 @@ const appRoutes: Routes = [
       }
       ]},
   { path: 'userEdit', component: UserEditComponent,canActivate: [AuthGuardGuard]},
-  { path: 'teams', component: TeamSearchComponent, canActivate: [AuthGuardGuard]},
+  { path: 'teams',
+    component: TeamSearchComponent,
+    canActivate: [AuthGuardGuard],
+    children: [
+      { path: ':id',
+        component: TeamsDetailComponent,
+      },
+    ]},
   { path: 'experts', component: ExpertSearchComponent, canActivate: [AuthGuardGuard]},
   { path: 'signUp', component: SignUpComponent},
   { path: 'upload', component: UploadTestComponent},

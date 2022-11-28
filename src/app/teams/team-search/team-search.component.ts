@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {ActivatedRoute, Router} from "@angular/router";
 
 @Component({
   selector: 'app-team-search',
@@ -7,9 +8,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class TeamSearchComponent implements OnInit {
 
-  constructor() { }
+  constructor(
+    private router: Router) {}
 
   ngOnInit(): void {
+    this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+  }
+
+  onRefresh(){
+    this.router.navigate(['/teams']);
   }
 
 }

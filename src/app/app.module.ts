@@ -20,6 +20,7 @@ import { UserStartComponent } from './user/user-start/user-start.component';
 import { UserUpdateComponent } from './user/user-update/user-update.component';
 import { UploadTestComponent } from './shared/upload-test/upload-test.component';
 import {Ng2SearchPipeModule} from "ng2-search-filter";
+import { TeamsDetailComponent } from './teams/teams-detail/teams-detail.component';
 
 @NgModule({
   declarations: [
@@ -36,6 +37,7 @@ import {Ng2SearchPipeModule} from "ng2-search-filter";
     UserStartComponent,
     UserUpdateComponent,
     UploadTestComponent,
+    TeamsDetailComponent,
   ],
     imports: [
         BrowserModule,

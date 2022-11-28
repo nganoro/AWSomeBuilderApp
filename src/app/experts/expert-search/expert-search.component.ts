@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import {TeamMember} from "../../shared/TeamMember";
 import {AuthService} from "../../authorization/auth.service";
 import {ApiService} from "../../authorization/api.service";
-import {Observable, Subscription} from "rxjs";
 
 @Component({
   selector: 'app-expert-search',
@@ -15,8 +14,7 @@ export class ExpertSearchComponent implements OnInit {
   searchText: any;
 
   constructor(
-    private apiService: ApiService,
-    private authService: AuthService) { }
+    private apiService: ApiService,) { }
 
   ngOnInit(): void {
     this.retrieveData();
@@ -41,7 +39,6 @@ export class ExpertSearchComponent implements OnInit {
   newArray: any = [];
   onChange(event: any){
     if (event.target.checked){
-      console.log(event.target.value);
       this.tempApiArray = this.originalArrays.filter(
         (e: any)=> e.proficiency == event.target.value);
           this.teamMember = [];
@@ -54,6 +51,7 @@ export class ExpertSearchComponent implements OnInit {
             }
           }
     } else {
+      console.log(event.target.checked)
       this.tempApiArray = this.teamMember.filter(
         (e: any)=> e.proficiency != event.target.value);
       this.newArray = [];
@@ -64,9 +62,13 @@ export class ExpertSearchComponent implements OnInit {
         for(let i=0; i<firstFilter.length; i++){
           var filterObj = firstFilter[i];
           this.teamMember.push(filterObj);
+          console.log(this.teamMember);
         }
       }
     }
+  }
 
+  resetFilter(){
+    this.teamMember = this.originalArrays;
   }
 }

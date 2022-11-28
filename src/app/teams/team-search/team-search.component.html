@@ -1,2 +1,19 @@
-<p>team-search works!</p>
-
+<div class="row">
+  <div class="nav flex-column nav-pills col-md-6 center" id="v-pills-tab" role="tablist" aria-orientation="vertical" routerLinkActive="active">
+    <a class="nav-link" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-profile" role="tab" aria-controls="v-pills-profile"
+       aria-selected="false" (click)="onRefresh()">Home</a>
+    <a class="nav-link" id="v-pills-message-tab" data-toggle="pill" href="#v-pills-message" role="tab" aria-controls="v-pills-message"
+       aria-selected="false" routerLink="/teams/GCC" >GCC</a>
+    <a class="nav-link" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile" role="tab" aria-controls="v-pills-profile"
+       aria-selected="false" routerLink="/teams/RDT">RDT</a>
+  </div>
+  <div class="col-md-6">
+    <!--    <app-recipie-detail-->
+    <!--      *ngIf="selectedRecipe; else infoText"-->
+    <!--      [chosenRecipe]="selectedRecipe"></app-recipie-detail>-->
+    <!--    <ng-template #infoText>-->
+    <!--      <section appBetterHighlight highlightColor="blue">Please Select a Recipe!</section>-->
+    <!--    </ng-template>-->
+    <router-outlet></router-outlet>
+  </div>
+</div>
