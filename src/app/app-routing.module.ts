@@ -14,6 +14,7 @@ import {UserUpdateComponent} from "./user/user-update/user-update.component";
 import {UploadTestComponent} from "./shared/upload-test/upload-test.component";
 import {TeamsDetailComponent} from "./teams/teams-detail/teams-detail.component";
 import {TeamStartComponent} from "./teams/team-start/team-start.component";
+import {ExpertDetailComponent} from "./experts/expert-detail/expert-detail.component";
 
 const appRoutes: Routes = [
   { path: '', redirectTo: '/Authorization', pathMatch: 'full'},
@@ -48,6 +49,7 @@ const appRoutes: Routes = [
       },
     ]},
   { path: 'experts', component: ExpertSearchComponent, canActivate: [AuthGuardGuard]},
+  { path: 'experts/:id', component: ExpertDetailComponent, canActivate: [AuthGuardGuard]},
   { path: 'signUp', component: SignUpComponent},
   { path: 'upload', component: UploadTestComponent},
 ]

@@ -3,6 +3,7 @@ import {ApiService} from "../../authorization/api.service";
 import {ActivatedRoute} from "@angular/router";
 import {Subscription} from "rxjs";
 import {Teams} from "../../shared/Teams";
+import {TeamMember} from "../../shared/TeamMember";
 
 
 @Component({
@@ -15,6 +16,7 @@ export class TeamsDetailComponent implements OnInit {
   routedTeam= '';
   currentTeam: Teams;
   routeParamObs: Subscription;
+  teamUsernames: any[] = [];
 
   constructor(
     private apiService: ApiService,
@@ -26,6 +28,7 @@ export class TeamsDetailComponent implements OnInit {
     });
 
     this.fetchSingleTeam();
+    this.fetchTeamUsernames();
   }
 
   fetchSingleTeam(){
@@ -34,6 +37,18 @@ export class TeamsDetailComponent implements OnInit {
         console.log(response);
         this.currentTeam = response;
         console.log(this.currentTeam);
+      },
+      error: error => {
+        console.log(error)
+      }
+    });
+  }
+
+  fetchTeamUsernames(){
+    this.apiService.fetchTeamUsernames(this.routedTeam).subscribe({
+      next: (response) => {
+        console.log(response);
+        this.teamUsernames = response; // if api is chosen, get what origianlArray gives
       },
       error: error => {
         console.log(error)

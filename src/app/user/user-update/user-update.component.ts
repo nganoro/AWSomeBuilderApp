@@ -84,9 +84,6 @@ export class UserUpdateComponent implements OnInit {
   }
 
   onSubmit(){
-    const file = this.toFile.item(0);
-    this.uploadService.uploadProfilePic(file, this.fileUploadUrl);
-
     const newTeamMemeber = new TeamMember(
       this.updateForm.value.email,
       this.updateForm.value.title,
@@ -97,7 +94,13 @@ export class UserUpdateComponent implements OnInit {
       this.updateForm.value.lastName,
       this.updateForm.value.userName
     );
+    console.log(newTeamMemeber);
     this.apiService.updateTeamMember(newTeamMemeber, this.authenticatedUserName, this.oldProficiency);
+
+    if(this.toFile){
+      const file = this.toFile.item(0);
+      this.uploadService.uploadProfilePic(file, this.fileUploadUrl);
+    }
   }
 
   onChange(event: Event) {

@@ -74,23 +74,31 @@
 
 <div class="container">
   <div class="col-xs-12">
-    <table class="table table-striped">
+    <table class="table table-hover" style="cursor:pointer;">
       <thead>
       <tr>
         <th scope="col">#</th>
         <th scope="col">First Name</th>
         <th scope="col">Last Name</th>
-        <th scope="col">Service</th>
+        <th scope="col">Team</th>
         <th scope="col">Proficiency</th>
+        <th scope="col">Service</th>
+        <th scope="col">Title</th>
+        <th scope="col">Email</th>
+        <th scope="col">User Name</th>
       </tr>
       </thead>
       <tbody *ngFor="let member of teamMember | filter:searchText">
-      <tr>
+      <tr (click)="showRow(member)">
         <th scope="row" class="counterCell"></th>
         <td>{{member.first_name}}</td>
         <td>{{member.last_name}}</td>
-        <td>{{member.service}}</td>
+        <td>{{member.team}}</td>
         <td>{{member.proficiency}}</td>
+        <td>{{member.service}}</td>
+        <td>{{member.title}}</td>
+        <td>{{member.email}}</td>
+        <td>{{member.user_name}}</td>
       </tr>
       </tbody>
     </table>

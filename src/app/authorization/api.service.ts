@@ -146,11 +146,37 @@ export class ApiService {
       })
       .pipe(
         map((result) => {
-          console.log(result);
           result.Items.forEach((item:any)=>{
             this.singleTeam = item;
           });
           return this.singleTeam;
+        })
+      );
+  }
+
+  fetchTeamUsernames(team: string){
+    let uppercaseTeam = team.toUpperCase();
+
+    let params = new HttpParams().set('team-proficiency-index', uppercaseTeam);
+
+    const userSession = this.authService.getUserSession();
+    const token = userSession.getIdToken().getJwtToken();
+
+    let headers = new HttpHeaders();
+    headers = headers.append('Content-Type', 'application/json');
+    headers = headers.append('Authorization', token);
+
+    return this.http.get<any>('https://jwqaleasy0.execute-api.us-east-1.amazonaws.com/prod/TeamMember',
+      {
+        headers: headers,
+        params: params
+      }).pipe(
+        map((result) => {
+          let resultArray: any[] = [];
+          result.Items.forEach((item:any)=>{
+            resultArray.push(item);
+          });
+          return resultArray;
         })
       );
   }

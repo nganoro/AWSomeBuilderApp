@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {TeamMember} from "../../shared/TeamMember";
 import {AuthService} from "../../authorization/auth.service";
 import {ApiService} from "../../authorization/api.service";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-expert-search',
@@ -14,7 +15,8 @@ export class ExpertSearchComponent implements OnInit {
   searchText: any;
 
   constructor(
-    private apiService: ApiService,) { }
+    private apiService: ApiService,
+    private router: Router) { }
 
   ngOnInit(): void {
     this.retrieveData();
@@ -68,5 +70,9 @@ export class ExpertSearchComponent implements OnInit {
 
   resetFilter(){
     this.teamMember = this.originalArrays;
+  }
+
+  showRow(team: TeamMember) {
+    this.router.navigate(['/experts/', team.user_name]);
   }
 }
