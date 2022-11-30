@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, ElementRef, OnInit, QueryList, ViewChildren} from '@angular/core';
 import {TeamMember} from "../../shared/TeamMember";
 import {AuthService} from "../../authorization/auth.service";
 import {ApiService} from "../../authorization/api.service";
@@ -10,8 +10,10 @@ import {Router} from "@angular/router";
   styleUrls: ['./expert-search.component.css']
 })
 export class ExpertSearchComponent implements OnInit {
+  @ViewChildren("checkboxes") checkboxes: QueryList<ElementRef>;
 
-  public teamMember: TeamMember[] = [];
+  teamMember: TeamMember[] = [];
+  resetTeamMember: TeamMember[] = [];
   searchText: any;
 
   constructor(
@@ -20,7 +22,6 @@ export class ExpertSearchComponent implements OnInit {
 
   ngOnInit(): void {
     this.retrieveData();
-    console.log(this.teamMember);
   }
 
   originalArrays: any = [];
@@ -29,7 +30,7 @@ export class ExpertSearchComponent implements OnInit {
         next: (response) => {
             this.teamMember = response; // if api is chosen, get what origianlArray gives
             this.originalArrays = response;// if api is chosen, remove everything else but keep api, then pass it to teamMember
-            console.log(this.originalArrays);
+            this.resetTeamMember = response;
         },
         error: error => {
           console.log(error)
@@ -51,6 +52,7 @@ export class ExpertSearchComponent implements OnInit {
               var filterObj = firstFilter[i];
               this.teamMember.push(filterObj);
             }
+            console.log(this.teamMember);
           }
     } else {
       this.tempApiArray = this.teamMember.filter(
@@ -68,8 +70,15 @@ export class ExpertSearchComponent implements OnInit {
     }
   }
 
-  resetFilter(){
-    this.teamMember = this.originalArrays;
+  uncheckAll() {
+    this.teamMember = [];
+    this.tempApiArray = [];
+    this.newArray = [];
+    this.teamMember = this.resetTeamMember;
+    this.checkboxes.forEach((element) => {
+      // this.originalArrays = this.resetTeamMember;
+      element.nativeElement.checked = false;
+    });
   }
 
   showRow(team: TeamMember) {

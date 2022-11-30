@@ -53,15 +53,12 @@
             name="title"
             required/>
         </div>
-        <div class="col-xs-12">
-          <label for="team">Team</label>
-          <input
-            type="team"
-            id="team"
-            class="form-control"
-            formControlName="team"
-            name="team"
-            required/>
+        <label for="title">Team</label>
+        <div class="input-group">
+          <select class="form-select" formControlName="team" name="team" id="team" required>
+            <option value="GCC">GCC</option>
+            <option value="RDT">RDT</option>
+          </select>
         </div>
         <div class="input-group">
           <div class="input-group-prepend">

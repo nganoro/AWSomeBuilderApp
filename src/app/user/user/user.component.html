@@ -1,11 +1,11 @@
 <div class="row">
   <div class="nav flex-column nav-pills col-md-6 center" id="v-pills-tab" role="tablist" aria-orientation="vertical" routerLinkActive="active">
     <a class="nav-link" id="v-pills-home-tab" data-toggle="pill"  role="tab" aria-controls="v-pills-home"
-       aria-selected="t" routerLink="/User/{{username}}">My Page</a>
+       aria-selected="t" routerLink="/User/{{username}}" *ngIf="teamMember">My Page</a>
     <a class="nav-link" id="v-pills-profile-tab" data-toggle="pill"  role="tab" aria-controls="v-pills-profile"
-       aria-selected="false" routerLink="/User/{{username}}/edit">Edit</a>
+       aria-selected="false" routerLink="/User/{{username}}/edit" *ngIf="teamMember">Edit</a>
     <a class="nav-link" id="v-pills-messages-tab" data-toggle="pill"  role="tab" aria-controls="v-pills-messages"
-       aria-selected="false" routerLink="/User/signup">Create Profile</a>
+       aria-selected="false" routerLink="/User/signup" *ngIf="teamMember == (null || undefined)">Create Profile</a>
   </div>
   <div class="col-md-6">
     <!--    <app-recipie-detail-->

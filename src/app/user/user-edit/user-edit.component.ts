@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {FormControl, FormGroup} from "@angular/forms";
+import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {ApiService} from "../../authorization/api.service";
 import {TeamMember} from "../../shared/TeamMember";
 import {AuthService} from "../../authorization/auth.service";
@@ -11,12 +11,15 @@ import {AuthService} from "../../authorization/auth.service";
 })
 export class UserEditComponent implements OnInit {
   profileForm: FormGroup;
+  newUserName: string;
 
   constructor(
     private apiService: ApiService,
-    private authService: AuthService) { }
+    private authService: AuthService) {
+  }
 
   ngOnInit(): void {
+    this.newUserName = this.apiService.getUserName();
     this.profileForm = new FormGroup({
       'email': new FormControl(),
       'title': new FormControl(),
@@ -26,11 +29,12 @@ export class UserEditComponent implements OnInit {
       'firstName': new FormControl(),
       'lastName': new FormControl(),
       'userName': new FormControl(),
-    })
+    });
+    this.initForm();
   }
 
-  onSubmit(){
-    if(!this.profileForm.valid){
+  onSubmit() {
+    if (!this.profileForm.valid) {
       return;
     }
 
@@ -49,5 +53,25 @@ export class UserEditComponent implements OnInit {
 
     this.apiService.onStoreData(newTeamMemeber);
     this.profileForm.reset();
+  }
+
+  private initForm() {
+
+    try {
+      if (this.newUserName) {
+        this.profileForm = new FormGroup({
+          'email': new FormControl(),
+          'title': new FormControl(),
+          'team': new FormControl(),
+          'service': new FormControl(),
+          'proficiency': new FormControl(),
+          'firstName': new FormControl(),
+          'lastName': new FormControl(),
+          'userName': new FormControl(this.newUserName, Validators.required),
+        });
+      }
+    } catch (error) {
+      console.log(error);
+    }
   }
 }

@@ -56,7 +56,6 @@ export class AuthorizationComponent implements OnInit {
   onConfirm() {
     this.authService.confirmUser(this.confirmForm.value.usrName, this.confirmForm.value.validationCode);
     alert('Confirmed!');
-    this.router.navigate(['/User']);
   }
 
   onClearItem() {
