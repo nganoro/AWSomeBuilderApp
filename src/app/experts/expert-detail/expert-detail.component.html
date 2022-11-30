@@ -2,7 +2,7 @@
   <div class="card p-4" *ngIf="routedTeam">
     <div class=" image d-flex flex-column justify-content-center align-items-center">
       <button class="btn btn-secondary">
-        <img src="" height="100" width="100">
+        <img [src]="userProfilePic" height="100" width="100">
       </button>
       <span class="name mt-3">{{routedTeam.first_name}} {{routedTeam.last_name}}</span>
       <span class="idd">{{routedTeam.proficiency}}</span>

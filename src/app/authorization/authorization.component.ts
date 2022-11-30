@@ -11,6 +11,7 @@ import { TeamMember } from "../shared/TeamMember";
 })
 export class AuthorizationComponent implements OnInit {
   confirmUser = false;
+  confirmButton = false;
   isLoginMode = true;
   signInForm: FormGroup;
   confirmForm: FormGroup;
@@ -28,7 +29,8 @@ export class AuthorizationComponent implements OnInit {
     this.signInForm = new FormGroup({
       'username': new FormControl(),
       'password': new FormControl(),
-    })
+    });
+    console.log(this.confirmUser);
   }
 
   switchToSignUp() {
@@ -45,12 +47,14 @@ export class AuthorizationComponent implements OnInit {
       const password = this.signInForm.value.password;
       const username = this.signInForm.value.username;
       this.authService.signIn(username, password);
+      this.confirmButton = true;
     }
     this.onClearItem();
   }
 
   onDoConfirm() {
     this.confirmUser = true;
+    this.confirmButton = true;
   }
 
   onConfirm() {

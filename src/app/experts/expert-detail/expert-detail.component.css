@@ -86,3 +86,12 @@ hr .new1 {
 .date {
   background-color: #ccc
 }
+
+.social-icon{
+  color: blueviolet;
+  transition: color 0.24s;
+}
+
+.social-icon:hover {
+  color: red;
+}
