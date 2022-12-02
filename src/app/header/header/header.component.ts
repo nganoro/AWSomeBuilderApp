@@ -20,7 +20,7 @@ export class HeaderComponent implements OnInit {
   onHome(){
     const authenticatedUser = this.authService.getAuthenticatedUser();
     if(authenticatedUser){
-      this.router.navigate(['/User']);
+      this.router.navigate(['/User/', authenticatedUser.getUsername()]);
     } else {
       this.router.navigate(['Authorization']);
     }

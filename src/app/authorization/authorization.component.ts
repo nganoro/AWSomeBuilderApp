@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import {FormControl, FormGroup} from "@angular/forms";
 import {AuthService} from "./auth.service";
 import {Router} from "@angular/router";
-import { TeamMember } from "../shared/TeamMember";
 
 @Component({
   selector: 'app-authorization',
@@ -10,11 +9,8 @@ import { TeamMember } from "../shared/TeamMember";
   styleUrls: ['./authorization.component.css']
 })
 export class AuthorizationComponent implements OnInit {
-  confirmUser = false;
-  confirmButton = false;
   isLoginMode = true;
   signInForm: FormGroup;
-  confirmForm: FormGroup;
   isLoading: boolean = false;
 
   constructor(
@@ -22,15 +18,10 @@ export class AuthorizationComponent implements OnInit {
     private authService: AuthService) { }
 
   ngOnInit(): void {
-    this.confirmForm = new FormGroup({
-      'usrName': new FormControl(),
-      'validationCode': new FormControl(),
-    }),
     this.signInForm = new FormGroup({
       'username': new FormControl(),
       'password': new FormControl(),
     });
-    console.log(this.confirmUser);
   }
 
   switchToSignUp() {
@@ -47,19 +38,8 @@ export class AuthorizationComponent implements OnInit {
       const password = this.signInForm.value.password;
       const username = this.signInForm.value.username;
       this.authService.signIn(username, password);
-      this.confirmButton = true;
     }
     this.onClearItem();
-  }
-
-  onDoConfirm() {
-    this.confirmUser = true;
-    this.confirmButton = true;
-  }
-
-  onConfirm() {
-    this.authService.confirmUser(this.confirmForm.value.usrName, this.confirmForm.value.validationCode);
-    alert('Confirmed!');
   }
 
   onClearItem() {

@@ -23,6 +23,7 @@ import {Ng2SearchPipeModule} from "ng2-search-filter";
 import { TeamsDetailComponent } from './teams/teams-detail/teams-detail.component';
 import { TeamStartComponent } from './teams/team-start/team-start.component';
 import { ExpertDetailComponent } from './experts/expert-detail/expert-detail.component';
+import { ConfirmationPageComponent } from './authorization/confirmation-page/confirmation-page.component';
 
 @NgModule({
   declarations: [
@@ -42,6 +43,7 @@ import { ExpertDetailComponent } from './experts/expert-detail/expert-detail.com
     TeamsDetailComponent,
     TeamStartComponent,
     ExpertDetailComponent,
+    ConfirmationPageComponent,
   ],
     imports: [
         BrowserModule,

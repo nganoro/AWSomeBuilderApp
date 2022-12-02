@@ -127,6 +127,11 @@ export class ApiService {
     return memberId;
   }
 
+  getUserEmail(){
+    const userEmail = this.authService.getUserSession().getIdToken();
+    return userEmail.payload.email;
+  }
+
   fetchSingleTeam(team: string){
     let uppercaseTeam = team.toUpperCase();
 

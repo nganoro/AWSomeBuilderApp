@@ -15,6 +15,7 @@ import {UploadTestComponent} from "./shared/upload-test/upload-test.component";
 import {TeamsDetailComponent} from "./teams/teams-detail/teams-detail.component";
 import {TeamStartComponent} from "./teams/team-start/team-start.component";
 import {ExpertDetailComponent} from "./experts/expert-detail/expert-detail.component";
+import {ConfirmationPageComponent} from "./authorization/confirmation-page/confirmation-page.component";
 
 const appRoutes: Routes = [
   { path: '', redirectTo: '/Authorization', pathMatch: 'full'},
@@ -36,6 +37,7 @@ const appRoutes: Routes = [
         component: UserUpdateComponent,
       }
       ]},
+  { path: 'Confirmation', component: ConfirmationPageComponent},
   { path: 'userEdit', component: UserEditComponent,canActivate: [AuthGuardGuard]},
   { path: 'teams',
     component: TeamSearchComponent,

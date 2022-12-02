@@ -12,6 +12,7 @@ import {AuthService} from "../../authorization/auth.service";
 export class UserEditComponent implements OnInit {
   profileForm: FormGroup;
   newUserName: string;
+  newUserEmail: string;
 
   constructor(
     private apiService: ApiService,
@@ -20,6 +21,7 @@ export class UserEditComponent implements OnInit {
 
   ngOnInit(): void {
     this.newUserName = this.apiService.getUserName();
+    this.newUserEmail = this.apiService.getUserEmail();
     this.profileForm = new FormGroup({
       'email': new FormControl(),
       'title': new FormControl(),
@@ -39,14 +41,14 @@ export class UserEditComponent implements OnInit {
     }
 
     const newTeamMemeber = new TeamMember(
-      this.profileForm.value.email,
+      this.newUserEmail,
       this.profileForm.value.title,
       this.profileForm.value.team,
       this.profileForm.value.service,
       this.profileForm.value.proficiency,
       this.profileForm.value.firstName,
       this.profileForm.value.lastName,
-      this.profileForm.value.userName
+      this.newUserName
     );
 
     console.log(newTeamMemeber);

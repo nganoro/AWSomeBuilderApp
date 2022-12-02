@@ -31,14 +31,12 @@ export class UserUpdateComponent implements OnInit {
   ngOnInit(): void {
     this.getAvatarName();
     this.updateForm = new FormGroup({
-      'email': new FormControl( ),
       'title': new FormControl( ),
       'team': new FormControl( ),
       'service': new FormControl( ),
       'proficiency': new FormControl( ),
       'firstName': new FormControl( ),
-      'lastName': new FormControl( ),
-      'userName': new FormControl( ),
+      'lastName': new FormControl( )
     });
 
     this.routeParamObs = this.activatedRoute.paramMap.subscribe((param) => {
@@ -63,14 +61,12 @@ export class UserUpdateComponent implements OnInit {
           next: (response: TeamMember) => {
             this.oldProficiency = response.proficiency;
             this.updateForm = new FormGroup({
-              'email': new FormControl(response.email, Validators.required),
               'title': new FormControl(response.title, Validators.required),
               'team': new FormControl(response.team, Validators.required),
               'service': new FormControl(response.service, Validators.required),
               'proficiency': new FormControl(response.proficiency, Validators.required),
               'firstName': new FormControl(response.first_name, Validators.required),
               'lastName': new FormControl(response.last_name, Validators.required),
-              'userName': new FormControl(response.user_name, Validators.required),
             });
           },
           error: error => {
@@ -84,15 +80,17 @@ export class UserUpdateComponent implements OnInit {
   }
 
   onSubmit(){
+    let userEmail = this.apiService.getUserEmail();
+    let userName = this.apiService.getUserName();
     const newTeamMemeber = new TeamMember(
-      this.updateForm.value.email,
+      userEmail,
       this.updateForm.value.title,
       this.updateForm.value.team,
       this.updateForm.value.service,
       this.oldProficiency,
       this.updateForm.value.firstName,
       this.updateForm.value.lastName,
-      this.updateForm.value.userName
+      userName
     );
     console.log(newTeamMemeber);
     this.apiService.updateTeamMember(newTeamMemeber, this.authenticatedUserName, this.oldProficiency);

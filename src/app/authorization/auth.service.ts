@@ -50,7 +50,7 @@ export class AuthService {
         alert(err.message || JSON.stringify(err));
         return;
       }
-      this.router.navigate(['/User']);
+      this.router.navigate(['/Confirmation']);
       this.uniqueUsername(user.username);
     });
   }
@@ -100,7 +100,6 @@ export class AuthService {
         return;
       }
     });
-    window.location.reload();
   }
 
   getAuthenticatedUser(){
