@@ -3,14 +3,16 @@ export class Teams{
   public Competencies: string;
   public Tenets: string;
   public Proficiency: string;
-  public User_Id: string;
+  public PK: string;
+  public Market: string;
 
-  constructor(biography: string, competencies: string, tenets: string, service: string, proficiency: string, User_Id: string) {
+  constructor(biography: string, competencies: string, tenets: string, service: string, proficiency: string, Market: string, PK: string) {
     this.Biography = biography;
     this.Competencies = competencies;
     this.Tenets = tenets;
     this.Proficiency = proficiency;
-    this.User_Id = User_Id;
+    this.PK = PK;
+    this.Market = Market;
   }
 }
 

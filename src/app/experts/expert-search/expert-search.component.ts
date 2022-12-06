@@ -28,9 +28,8 @@ export class ExpertSearchComponent implements OnInit {
   retrieveData(){
     this.apiService.fetchAllData().subscribe({
         next: (response) => {
-            this.teamMember = response; // if api is chosen, get what origianlArray gives
-            this.originalArrays = response;// if api is chosen, remove everything else but keep api, then pass it to teamMember
-            this.resetTeamMember = response;
+          console.log(response);
+          this.teamMember = response; // if api is chosen, get what origianlArray gives
         },
         error: error => {
           console.log(error)

@@ -17,7 +17,7 @@ export class ApiService {
   }
 
   public teamMember: TeamMember[] = [];
-  public singleTeamMember: TeamMember;
+  singleTeamMember: TeamMember;
   singleTeam: Teams;
   teamArray: Teams[] = [];
 
@@ -71,7 +71,7 @@ export class ApiService {
 
   fetchSingleData(memberId: string){
 
-    let params = new HttpParams().set('User_Id', memberId);
+    let params = new HttpParams().set('PK', memberId);
 
     const userSession = this.authService.getUserSession();
     const token = userSession.getIdToken().getJwtToken();
@@ -87,8 +87,10 @@ export class ApiService {
       })
       .pipe(
         map((result) => {
+          console.log(result);
           result.Items.forEach((item:any)=>{
             this.singleTeamMember = item;
+            console.log(this.singleTeamMember);
           });
           return this.singleTeamMember;
         })
@@ -133,10 +135,32 @@ export class ApiService {
   }
 
   fetchSingleTeam(team: string){
-    let uppercaseTeam = team.toUpperCase();
 
-    let params = new HttpParams().set('User_Id', uppercaseTeam);
+    const userSession = this.authService.getUserSession();
+    const token = userSession.getIdToken().getJwtToken();
 
+    let headers = new HttpHeaders();
+    headers = headers.append('Content-Type', 'application/json');
+    headers = headers.append('Authorization', token);
+
+    let params = new HttpParams().set('PK', team);
+
+    return this.http.get<any>('https://jwqaleasy0.execute-api.us-east-1.amazonaws.com/prod/teams',
+      {
+        headers: headers,
+        params: params,
+      })
+      .pipe(
+        map((result) => {
+          result.Items.forEach((item: any) => {
+            this.singleTeam = item;
+          });
+          return this.singleTeam;
+        })
+      );
+    }
+
+  fetchAllTeams(){
     const userSession = this.authService.getUserSession();
     const token = userSession.getIdToken().getJwtToken();
 
@@ -147,22 +171,21 @@ export class ApiService {
     return this.http.get<any>('https://jwqaleasy0.execute-api.us-east-1.amazonaws.com/prod/teams',
       {
         headers: headers,
-        params: params,
       })
       .pipe(
-        map((result) => {
-          result.Items.forEach((item:any)=>{
-            this.singleTeam = item;
-          });
-          return this.singleTeam;
-        })
-      );
+      map((result) => {
+        let resultArray: any[] = [];
+        result.Items.forEach((item:any)=>{
+          resultArray.push(item);
+        });
+        return resultArray;
+      })
+    );
   }
 
   fetchTeamUsernames(team: string){
-    let uppercaseTeam = team.toUpperCase();
 
-    let params = new HttpParams().set('team-proficiency-index', uppercaseTeam);
+    let params = new HttpParams().set('team', team);
 
     const userSession = this.authService.getUserSession();
     const token = userSession.getIdToken().getJwtToken();

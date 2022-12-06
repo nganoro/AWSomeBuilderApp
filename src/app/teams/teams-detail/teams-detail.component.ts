@@ -32,11 +32,10 @@ export class TeamsDetailComponent implements OnInit {
   }
 
   fetchSingleTeam(){
+
     this.apiService.fetchSingleTeam(this.routedTeam).subscribe({
       next: (response: any) => {
-        console.log(response);
         this.currentTeam = response;
-        console.log(this.currentTeam);
       },
       error: error => {
         console.log(error)

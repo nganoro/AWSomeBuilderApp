@@ -45,11 +45,9 @@ const appRoutes: Routes = [
     children: [
       { path: '',
         component: TeamStartComponent,
-      },
-      { path: ':id',
-        component: TeamsDetailComponent,
-      },
+      }
     ]},
+  { path: 'teams/:id', component: TeamsDetailComponent, canActivate: [AuthGuardGuard]},
   { path: 'experts', component: ExpertSearchComponent, canActivate: [AuthGuardGuard]},
   { path: 'experts/:id', component: ExpertDetailComponent, canActivate: [AuthGuardGuard]},
   { path: 'signUp', component: SignUpComponent},

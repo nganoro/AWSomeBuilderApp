@@ -13,9 +13,9 @@ import {UploadService} from "../../shared/upload.service";
 export class ExpertDetailComponent implements OnInit {
 
   routedExpert= '';
-  routedTeam: TeamMember;
   routeParamObs: Subscription;
   userProfilePic = '';
+  newTeam: TeamMember;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -34,8 +34,7 @@ export class ExpertDetailComponent implements OnInit {
   getTeamMember(){
     this.apiService.fetchSingleData(this.routedExpert).subscribe({
       next: (response: any) => {
-        console.log(response)
-        this.routedTeam = response;
+        this.newTeam = response;
       },
       error: error => {
         console.log(error)
