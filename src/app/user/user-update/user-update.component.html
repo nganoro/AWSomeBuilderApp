@@ -36,30 +36,53 @@
         <div class="input-group">
           <select class="form-select" formControlName="team" name="team" id="team" required>
             <option value="GCC">GCC</option>
-            <option value="RDT">RDT</option>
+            <option value="Alexa">Alexa</option>
+            <option value="PrimeTv">PrimeTv</option>
           </select>
         </div>
-        <div class="input-group">
-          <div class="input-group-prepend">
-            <label class="input-group-text" for="service">Services</label>
-          </div>
-          <select class="form-select" formControlName="service"name="service" id="service" required>
-            <option value="s3">S3</option>
-            <option value="dynamoDB">DynamoDB</option>
-            <option value="lambda">Lambda</option>
-            <option value="api">API</option>
-            <option value="cloudfront">CloudFront</option>
-          </select>
+        <label for="title" *ngIf="addSkills">Skills</label>
+        <div class="col-xs-12" formArrayName="skills">
+          <div
+            class="row"
+            *ngFor="let skillsCtrl of Controls; let i = index"
+            [formGroupName]="i">
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <label class="input-group-text" for="service">Services</label>
+              </div>
+              <select class="form-select" formControlName="service" name="service" id="service" required>
+                <option value="S3">S3</option>
+                <option value="DynamoDB">DynamoDB</option>
+                <option value="Lambda">Lambda</option>
+                <option value="Api">API</option>
+                <option value="Cloudfront">CloudFront</option>
+              </select>
 
-          <div class="input-group-prepend">
-            <label class="input-group-text" for="proficiency">Proficiency</label>
+              <div class="input-group-prepend">
+                <label class="input-group-text" for="proficiency">Proficiency</label>
+              </div>
+              <select class="form-select" formControlName="proficiency" name="proficiency" id="proficiency" required>
+                <option value="Beginner">Beginner</option>
+                <option value="Intermediate">Intermediate</option>
+                <option value="Expert">Expert</option>
+              </select>
+              <div class="col-xs-12">
+                <button
+                  type="button"
+                  class="btn btn-danger"
+                  (click)="onDeleteSkills(i)">
+                  X</button>
+              </div>
+            </div>
           </div>
-          <select class="form-select" formControlName="proficiency"name="proficiency" id="proficiency" required>
-            <option value="beginner">Beginner</option>
-            <option value="intermediate">Intermediate</option>
-            <option value="expert">Expert</option>
-          </select>
         </div>
+        <br>
+        <div class="row">
+          <div class="col-xs-12">
+            <button type="button" class="btn btn-secondary" (click)="onAddSkills()">Add Skills</button>
+          </div>
+        </div>
+        <hr>
         <div class="mb-3">
           <label for="profilePic">Profile Pic</label>
           <input class="form-control" type="file" id="profilePic" (change)="onChange($event)">

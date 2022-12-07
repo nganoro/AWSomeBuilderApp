@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import {FormControl, FormGroup, Validators} from "@angular/forms";
+import {FormControl, FormGroup, Validators, FormArray} from "@angular/forms";
 import {ApiService} from "../../authorization/api.service";
 import {TeamMember} from "../../shared/TeamMember";
 import {AuthService} from "../../authorization/auth.service";
+import {ProfileModel} from "../../shared/profile.model";
+import {UploadService} from "../../shared/upload.service";
 
 @Component({
   selector: 'app-user-edit',
@@ -10,16 +12,22 @@ import {AuthService} from "../../authorization/auth.service";
   styleUrls: ['./user-edit.component.css']
 })
 export class UserEditComponent implements OnInit {
+  toFile: any;
   profileForm: FormGroup;
   newUserName: string;
   newUserEmail: string;
+  fileUploadUrl: string;
+  userProfilePicName = '';
 
   constructor(
     private apiService: ApiService,
-    private authService: AuthService) {
+    private authService: AuthService,
+    private uploadService: UploadService) {
   }
 
   ngOnInit(): void {
+    this.getAvatarName();
+    let userSkills = new FormArray([]);
     this.newUserName = this.apiService.getUserName();
     this.newUserEmail = this.apiService.getUserEmail();
     this.profileForm = new FormGroup({
@@ -31,8 +39,9 @@ export class UserEditComponent implements OnInit {
       'firstName': new FormControl(),
       'lastName': new FormControl(),
       'userName': new FormControl(),
+      'skills': userSkills
     });
-    this.initForm();
+    this.uploadUrl();
   }
 
   onSubmit() {
@@ -48,32 +57,68 @@ export class UserEditComponent implements OnInit {
       this.profileForm.value.proficiency,
       this.profileForm.value.firstName,
       this.profileForm.value.lastName,
-      this.newUserName
+      this.newUserName,
+      this.profileForm.value.skills
     );
 
     console.log(newTeamMemeber);
 
     this.apiService.onStoreData(newTeamMemeber);
+    this.profileData(this.newUserName);
+    if(this.toFile){
+      const file = this.toFile.item(0);
+      this.uploadService.uploadProfilePic(file, this.fileUploadUrl);
+    }
     this.profileForm.reset();
   }
 
-  private initForm() {
+  onAddSkills(){
+    (<FormArray>this.profileForm.get('skills')).push(
+      new FormGroup({
+        'service' : new FormControl(null),
+        'proficiency' : new FormControl(null)
+      })
+    );
+  }
 
-    try {
-      if (this.newUserName) {
-        this.profileForm = new FormGroup({
-          'email': new FormControl(),
-          'title': new FormControl(),
-          'team': new FormControl(),
-          'service': new FormControl(),
-          'proficiency': new FormControl(),
-          'firstName': new FormControl(),
-          'lastName': new FormControl(),
-          'userName': new FormControl(this.newUserName, Validators.required),
-        });
-      }
-    } catch (error) {
-      console.log(error);
+  get Controls(){
+    return (<FormArray>this.profileForm.get('skills')).controls;
+  }
+
+  onDeleteSkills(index: number){
+    (<FormArray>this.profileForm.get('skills')).removeAt(index);
+  }
+
+  profileData(pk: string){
+    let profile: ProfileModel;
+    const tempSkills =  (<FormArray>this.profileForm.get('skills')).value;
+    for(let o of tempSkills){
+      let sk = 'skill#'+o.service +'#'+o.proficiency;
+      profile = new ProfileModel(pk, sk);
+      this.apiService.storeSkills(profile);
     }
   }
+
+  getAvatarName(){
+    const user = this.authService.getAuthenticatedUser()?.getUsername();
+    this.userProfilePicName = user!;
+  }
+
+  onChange(event: Event) {
+    // @ts-ignore
+    this.toFile = event.target.files;
+  }
+
+  uploadUrl(){
+    this.uploadService.getUploadSignedUrl(this.userProfilePicName).subscribe({
+      next: (response: any) => {
+        this.fileUploadUrl = response.presigned_url;
+        console.log(this.fileUploadUrl);
+      },
+      error: error => {
+        console.log(error)
+      }
+    });
+  }
+
 }

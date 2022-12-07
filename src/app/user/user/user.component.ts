@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import {AuthService} from "../../authorization/auth.service";
 import {ApiService} from "../../authorization/api.service";
 import {TeamMember} from "../../shared/TeamMember";
 
@@ -24,7 +23,6 @@ export class UserComponent implements OnInit {
     this.apiService.fetchSingleData(this.username).subscribe({
       next: (response: any) => {
         this.teamMember = response;
-        console.log(this.teamMember);
       },
       error: error => {
         console.log(error)

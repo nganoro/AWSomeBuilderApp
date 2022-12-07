@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {TeamMember} from "../../shared/TeamMember";
 import {ApiService} from "../../authorization/api.service";
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {AuthService} from "../../authorization/auth.service";
 import {Observable, Subscription} from "rxjs";
 import {UploadService} from "../../shared/upload.service";
@@ -20,7 +20,7 @@ export class UserDetailComponent implements OnInit {
 
   constructor(
     private apiService: ApiService,
-    private route: ActivatedRoute,
+    private router: Router,
     private authService: AuthService,
     private activatedRoute: ActivatedRoute,
     private uploadService: UploadService) { }
@@ -28,7 +28,6 @@ export class UserDetailComponent implements OnInit {
   ngOnInit(): void {
     const userSession = this.authService.getUserSession();
     console.log(userSession);
-    // this.userName = this.apiService.getUserName();
     this.routeParamObs = this.activatedRoute.paramMap.subscribe((param) => {
       this.userName = param.get('id')! || '';
     })
@@ -40,8 +39,11 @@ export class UserDetailComponent implements OnInit {
   getTeamMember(){
     this.apiService.fetchSingleData(this.userName).subscribe({
       next: (response: any) => {
-        console.log(response);
-        this.teamMember = response;
+        if(response === undefined || response === null){
+          this.router.navigate(["/User"]);
+        } else {
+          this.teamMember = response;
+        }
       },
       error: error => {
         console.log(error)

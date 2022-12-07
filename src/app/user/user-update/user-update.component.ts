@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import {ActivatedRoute} from "@angular/router";
 import {Subscription} from "rxjs";
-import {FormControl, FormGroup, Validators} from "@angular/forms";
+import {FormArray, FormControl, FormGroup, Validators} from "@angular/forms";
 import {ApiService} from "../../authorization/api.service";
 import {TeamMember} from "../../shared/TeamMember";
 import {UploadService} from "../../shared/upload.service";
 import {AuthService} from "../../authorization/auth.service";
+import {Skills} from "../../shared/skills.model";
 
 @Component({
   selector: 'app-user-update',
@@ -21,6 +22,8 @@ export class UserUpdateComponent implements OnInit {
   userProfilePicName = '';
   routeParamObs: Subscription;
   fileUploadUrl: string;
+  skills: Skills;
+  addSkills = false;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -30,21 +33,23 @@ export class UserUpdateComponent implements OnInit {
 
   ngOnInit(): void {
     this.getAvatarName();
+    let userSkills = new FormArray([]);
     this.updateForm = new FormGroup({
       'title': new FormControl( ),
       'team': new FormControl( ),
       'service': new FormControl( ),
       'proficiency': new FormControl( ),
       'firstName': new FormControl( ),
-      'lastName': new FormControl( )
+      'lastName': new FormControl( ),
+      'skills': userSkills
     });
 
     this.routeParamObs = this.activatedRoute.paramMap.subscribe((param) => {
       this.authenticatedUserName = param.get('id')! || '';
-      console.log(this.authenticatedUserName)
+      this.getUserSkills(this.authenticatedUserName);
+      console.log()
       this.initForm();
     })
-
     this.uploadUrl();
   }
 
@@ -53,20 +58,42 @@ export class UserUpdateComponent implements OnInit {
     this.userProfilePicName = user!;
   }
 
+  getUserSkills(user: string){
+    this.apiService.fetchSkills(user).subscribe({
+      next: (response) => {
+        this.skills = response[0].skills;
+      },
+      error: error => {
+        console.log(error)
+      }
+    });
+  }
+
   private initForm(){
+    let userSkills = new FormArray([]);
 
     try {
       if (this.authenticatedUserName) {
         this.apiService.fetchSingleData(this.authenticatedUserName).subscribe({
           next: (response: TeamMember) => {
+            if(this.skills){
+              // @ts-ignore
+              for(let skill of this.skills){
+                // @ts-ignore
+                userSkills.push(new FormGroup({
+                    'service': new FormControl(skill.service),
+                    'proficiency': new FormControl(skill.proficiency)
+                  })
+                );
+              }
+            }
             this.oldProficiency = response.proficiency;
             this.updateForm = new FormGroup({
               'title': new FormControl(response.title, Validators.required),
               'team': new FormControl(response.team, Validators.required),
-              'service': new FormControl(response.service, Validators.required),
-              'proficiency': new FormControl(response.proficiency, Validators.required),
               'firstName': new FormControl(response.first_name, Validators.required),
               'lastName': new FormControl(response.last_name, Validators.required),
+              'skills': userSkills
             });
           },
           error: error => {
@@ -90,10 +117,11 @@ export class UserUpdateComponent implements OnInit {
       this.oldProficiency,
       this.updateForm.value.firstName,
       this.updateForm.value.lastName,
-      userName
+      userName,
+      this.updateForm.value.skills
     );
     console.log(newTeamMemeber);
-    this.apiService.updateTeamMember(newTeamMemeber, this.authenticatedUserName, this.oldProficiency);
+    this.apiService.updateTeamMember(newTeamMemeber, this.authenticatedUserName, 'profile');
 
     if(this.toFile){
       const file = this.toFile.item(0);
@@ -116,6 +144,24 @@ export class UserUpdateComponent implements OnInit {
         console.log(error)
       }
     });
+  }
+
+  get Controls(){
+    return (<FormArray>this.updateForm.get('skills')).controls;
+  }
+
+  onDeleteSkills(index: number){
+    (<FormArray>this.updateForm.get('skills')).removeAt(index);
+  }
+
+  onAddSkills(){
+    this.addSkills = true;
+    (<FormArray>this.updateForm.get('skills')).push(
+      new FormGroup({
+        'service' : new FormControl(null),
+        'proficiency' : new FormControl(null)
+      })
+    );
   }
 
 }

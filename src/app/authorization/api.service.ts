@@ -4,6 +4,7 @@ import { AuthService} from "./auth.service";
 import { TeamMember } from "../shared/TeamMember";
 import {map, Observable, tap} from "rxjs";
 import {Teams} from "../shared/Teams";
+import {ProfileModel} from "../shared/profile.model";
 
 @Injectable()
 export class ApiService {
@@ -19,12 +20,6 @@ export class ApiService {
   public teamMember: TeamMember[] = [];
   singleTeamMember: TeamMember;
   singleTeam: Teams;
-  teamArray: Teams[] = [];
-
-  getTeam(){
-    console.log(this.teamMember);
-    return this.teamMember;
-  }
 
   onStoreData(member: TeamMember) {
 
@@ -87,21 +82,19 @@ export class ApiService {
       })
       .pipe(
         map((result) => {
-          console.log(result);
           result.Items.forEach((item:any)=>{
             this.singleTeamMember = item;
-            console.log(this.singleTeamMember);
           });
           return this.singleTeamMember;
         })
       );
   }
 
-  updateTeamMember(member: TeamMember, user_id: string, proficiency: string){
+  updateTeamMember(member: TeamMember, pk: string, sk: string){
 
     let params = new HttpParams()
-      .set('User_Id', user_id)
-      .set('proficiency', proficiency);
+      .set('PK', pk)
+      .set('SK', sk);
 
     const userSession = this.authService.getUserSession();
     const token = userSession.getIdToken().getJwtToken();
@@ -207,6 +200,51 @@ export class ApiService {
           return resultArray;
         })
       );
+  }
+
+  storeSkills(profile: ProfileModel){
+    const userSession = this.authService.getUserSession();
+    const token = userSession.getIdToken().getJwtToken();
+
+    let headers = new HttpHeaders();
+    headers = headers.append('Content-Type', 'application/json');
+    headers = headers.append('Authorization', token);
+
+    return this.http.post(
+      'https://jwqaleasy0.execute-api.us-east-1.amazonaws.com/prod/Profile',
+      JSON.stringify(profile),
+      {headers: headers})
+      .subscribe({
+        next: response => {console.log(response)},
+        error: error => {console.log(error)}
+      });
+  }
+
+  fetchSkills(user: string){
+
+    let params = new HttpParams().set('PK', user);
+
+    const userSession = this.authService.getUserSession();
+    const token = userSession.getIdToken().getJwtToken();
+
+    let headers = new HttpHeaders();
+    headers = headers.append('Content-Type', 'application/json');
+    headers = headers.append('Authorization', token);
+
+    return this.http.get<any>('https://jwqaleasy0.execute-api.us-east-1.amazonaws.com/prod/Profile',
+      {
+        headers: headers,
+        params: params
+      }).pipe(
+      map((result) => {
+        let resultArray: any[] = [];
+        result.Items.forEach((item:any)=>{
+          resultArray.push(item);
+        });
+        return resultArray;
+      })
+    );
+
   }
 }
 

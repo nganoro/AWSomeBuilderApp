@@ -13,10 +13,7 @@ export class TeamSearchComponent implements OnInit {
   @ViewChildren("checkboxes") checkboxes: QueryList<ElementRef>;
 
   teams: Teams[] = [];
-  resetTeams: Teams[] = [];
   searchText: any;
-  currentTeam: string;
-  teamUsernames: any[] = [];
 
   constructor(
     private router: Router,
@@ -25,7 +22,6 @@ export class TeamSearchComponent implements OnInit {
   ngOnInit(): void {
     this.router.routeReuseStrategy.shouldReuseRoute = () => false;
     this.fetchTeam();
-    console.log(this.teams);
   }
 
   fetchTeam(){
@@ -44,48 +40,4 @@ export class TeamSearchComponent implements OnInit {
     console.log(team);
     this.router.navigate(['/teams/', team.PK]);
   }
-
-  // tempApiArray: any = [];
-  // newArray: any = [];
-  // onChange(event: any){
-  //   if (event.target.checked){
-  //     this.tempApiArray = this.originalArrays.filter(
-  //       (e: any)=> e.proficiency == event.target.value);
-  //     this.teams = [];
-  //     this.newArray.push(this.tempApiArray);
-  //     for(let i=0; i<this.newArray.length; i++){
-  //       var firstFilter = this.newArray[i];
-  //       for(let i=0; i<firstFilter.length; i++){
-  //         var filterObj = firstFilter[i];
-  //         this.teams.push(filterObj);
-  //       }
-  //       console.log(this.teams);
-  //     }
-  //   } else {
-  //     this.tempApiArray = this.teams.filter(
-  //       (e: any)=> e.proficiency != event.target.value);
-  //     this.newArray = [];
-  //     this.teams = [];
-  //     this.newArray.push(this.tempApiArray);
-  //     for(let i=0; i<this.newArray.length; i++){
-  //       var firstFilter = this.newArray[i];
-  //       for(let i=0; i<firstFilter.length; i++){
-  //         var filterObj = firstFilter[i];
-  //         this.teams.push(filterObj);
-  //       }
-  //     }
-  //   }
-  // }
-
-  // uncheckAll() {
-  //   this.teams = [];
-  //   this.tempApiArray = [];
-  //   this.newArray = [];
-  //   this.teams = this.resetTeams;
-  //   this.checkboxes.forEach((element) => {
-  //     // this.originalArrays = this.resetTeamMember;
-  //     element.nativeElement.checked = false;
-  //   });
-  // }
-
 }
