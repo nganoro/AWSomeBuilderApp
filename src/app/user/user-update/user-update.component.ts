@@ -7,6 +7,7 @@ import {TeamMember} from "../../shared/TeamMember";
 import {UploadService} from "../../shared/upload.service";
 import {AuthService} from "../../authorization/auth.service";
 import {Skills} from "../../shared/skills.model";
+import {ProfileModel} from "../../shared/profile.model";
 
 @Component({
   selector: 'app-user-update',
@@ -24,6 +25,9 @@ export class UserUpdateComponent implements OnInit {
   fileUploadUrl: string;
   skills: Skills;
   addSkills = false;
+  oldSkills: any[] = [];
+  skill: boolean = false;
+
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -59,7 +63,8 @@ export class UserUpdateComponent implements OnInit {
   }
 
   getUserSkills(user: string){
-    this.apiService.fetchSkills(user).subscribe({
+    let key = 'PK';
+    this.apiService.fetchSkills(user, key).subscribe({
       next: (response) => {
         this.skills = response[0].skills;
       },
@@ -85,6 +90,8 @@ export class UserUpdateComponent implements OnInit {
                     'proficiency': new FormControl(skill.proficiency)
                   })
                 );
+                this.oldSkills.push(skill);
+                this.skill = true;
               }
             }
             this.oldProficiency = response.proficiency;
@@ -122,6 +129,7 @@ export class UserUpdateComponent implements OnInit {
     );
     console.log(newTeamMemeber);
     this.apiService.updateTeamMember(newTeamMemeber, this.authenticatedUserName, 'profile');
+    this.profileData(userName);
 
     if(this.toFile){
       const file = this.toFile.item(0);
@@ -162,6 +170,24 @@ export class UserUpdateComponent implements OnInit {
         'proficiency' : new FormControl(null)
       })
     );
+  }
+
+  profileData(pk: string){
+    let profile: ProfileModel;
+    let oldSk: string;
+    const tempSkills =  (<FormArray>this.updateForm.get('skills')).value;
+    for(let index = 0; index < tempSkills.length; index++){
+      let sk = 'skill#'+tempSkills[index].service +'#'+tempSkills[index].proficiency;
+      oldSk = this.formatSK(this.oldSkills[index]);
+      profile = new ProfileModel(pk, oldSk, sk);
+      console.log(profile, pk, oldSk);
+      this.apiService.updateSkills(profile, pk, oldSk);
+    }
+  }
+
+  formatSK(any: Skills){
+    let sk = 'skill#'+any.service;
+    return sk;
   }
 
 }

@@ -1,6 +1,6 @@
 <div class="row">
   <div class="col-xs-12 pt-5">
-    <form [formGroup]="updateForm" (ngSubmit)="onSubmit()">
+    <form [formGroup]="updateForm" (ngSubmit)="onSubmit()" *ngIf="skill">
       <div class="form-group">
         <div class="col-xs-12">
           <label for="firstName">First Name</label>
@@ -33,7 +33,7 @@
             required/>
         </div>
         <label for="title">Team</label>
-        <div class="input-group">
+        <div class="input-group" style="margin-bottom: 5px">
           <select class="form-select" formControlName="team" name="team" id="team" required>
             <option value="GCC">GCC</option>
             <option value="Alexa">Alexa</option>
@@ -47,7 +47,7 @@
             *ngFor="let skillsCtrl of Controls; let i = index"
             [formGroupName]="i">
             <div class="input-group">
-              <div class="input-group-prepend">
+              <div class="input-group-prepend" style="margin-bottom: 3px">
                 <label class="input-group-text" for="service">Services</label>
               </div>
               <select class="form-select" formControlName="service" name="service" id="service" required>
@@ -76,8 +76,7 @@
             </div>
           </div>
         </div>
-        <br>
-        <div class="row">
+        <div class="row" style="margin-bottom: 5px">
           <div class="col-xs-12">
             <button type="button" class="btn btn-secondary" (click)="onAddSkills()">Add Skills</button>
           </div>

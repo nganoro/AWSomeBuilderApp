@@ -10,3 +10,26 @@ table {
   background-color: #E8EAF6;
   cursor: pointer;
 }
+
+ul {
+  column-count: 2;
+  column-gap: 3rem;
+  list-style: none;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.app-btn {
+  height: 32px;
+  width: 110px;
+  background: #f28100;
+  border: none;
+  color: #fff;
+  outline: none;
+  cursor: pointer;
+  border-radius: 2px;
+}
+
+

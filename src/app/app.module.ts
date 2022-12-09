@@ -24,6 +24,8 @@ import { TeamsDetailComponent } from './teams/teams-detail/teams-detail.componen
 import { TeamStartComponent } from './teams/team-start/team-start.component';
 import { ExpertDetailComponent } from './experts/expert-detail/expert-detail.component';
 import { ConfirmationPageComponent } from './authorization/confirmation-page/confirmation-page.component';
+import {NgxPaginationModule} from 'ngx-pagination';
+import {GenericListFilterModule} from "generic-list-filter"; // <-- import the module
 
 @NgModule({
   declarations: [
@@ -52,6 +54,8 @@ import { ConfirmationPageComponent } from './authorization/confirmation-page/con
         HttpClientModule,
         FormsModule,
         Ng2SearchPipeModule,
+        NgxPaginationModule,
+        GenericListFilterModule
     ],
   providers: [
     AuthService,

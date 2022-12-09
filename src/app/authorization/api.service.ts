@@ -5,6 +5,7 @@ import { TeamMember } from "../shared/TeamMember";
 import {map, Observable, tap} from "rxjs";
 import {Teams} from "../shared/Teams";
 import {ProfileModel} from "../shared/profile.model";
+import {Skills} from "../shared/skills.model";
 
 @Injectable()
 export class ApiService {
@@ -220,9 +221,9 @@ export class ApiService {
       });
   }
 
-  fetchSkills(user: string){
+  fetchSkills(user: string, key: string){
 
-    let params = new HttpParams().set('PK', user);
+    let params = new HttpParams().set(key, user);
 
     const userSession = this.authService.getUserSession();
     const token = userSession.getIdToken().getJwtToken();
@@ -246,5 +247,59 @@ export class ApiService {
     );
 
   }
+
+  fetchGSISkills(user: string, key: string){
+
+    let params = new HttpParams().set(key, user);
+
+    const userSession = this.authService.getUserSession();
+    const token = userSession.getIdToken().getJwtToken();
+
+    let headers = new HttpHeaders();
+    headers = headers.append('Content-Type', 'application/json');
+    headers = headers.append('Authorization', token);
+
+    return this.http.get<any>('https://jwqaleasy0.execute-api.us-east-1.amazonaws.com/prod/Profile',
+      {
+        headers: headers,
+        params: params
+      }).pipe(
+      map((result) => {
+        let resultArray: any[] = [];
+        result.Items.forEach((item:any)=>{
+          resultArray.push(item);
+        });
+        return resultArray;
+      })
+    );
+
+  }
+
+  updateSkills(profile: ProfileModel, user: string, sk: string){
+    let params = new HttpParams()
+      .set('PK', user)
+      .set('SK', sk);
+
+    const userSession = this.authService.getUserSession();
+    const token = userSession.getIdToken().getJwtToken();
+
+    let headers = new HttpHeaders();
+    headers = headers.append('Content-Type', 'application/json');
+    headers = headers.append('Authorization', token);
+
+    return this.http.put(
+      'https://jwqaleasy0.execute-api.us-east-1.amazonaws.com/prod/Profile',
+      JSON.stringify(profile),
+      {
+        headers: headers,
+        params: params,
+      })
+      .subscribe({
+        next: response => {console.log(response)},
+        error: error => {console.log(error)}
+      });
+  }
+
+
 }
 

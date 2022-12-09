@@ -18,6 +18,7 @@ export class UserEditComponent implements OnInit {
   newUserEmail: string;
   fileUploadUrl: string;
   userProfilePicName = '';
+  addSkills = false;
 
   constructor(
     private apiService: ApiService,
@@ -73,6 +74,7 @@ export class UserEditComponent implements OnInit {
   }
 
   onAddSkills(){
+    this.addSkills = true;
     (<FormArray>this.profileForm.get('skills')).push(
       new FormGroup({
         'service' : new FormControl(null),
@@ -93,8 +95,9 @@ export class UserEditComponent implements OnInit {
     let profile: ProfileModel;
     const tempSkills =  (<FormArray>this.profileForm.get('skills')).value;
     for(let o of tempSkills){
-      let sk = 'skill#'+o.service +'#'+o.proficiency;
-      profile = new ProfileModel(pk, sk);
+      let userSkill = 'skill#'+o.service +'#'+o.proficiency;
+      let sk = 'skill#'+o.service;
+      profile = new ProfileModel(pk, sk, userSkill);
       this.apiService.storeSkills(profile);
     }
   }

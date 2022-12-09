@@ -1,8 +1,8 @@
-import {Component, ElementRef, OnInit, QueryList, ViewChildren} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {TeamMember} from "../../shared/TeamMember";
-import {AuthService} from "../../authorization/auth.service";
 import {ApiService} from "../../authorization/api.service";
 import {Router} from "@angular/router";
+
 
 @Component({
   selector: 'app-expert-search',
@@ -10,77 +10,62 @@ import {Router} from "@angular/router";
   styleUrls: ['./expert-search.component.css']
 })
 export class ExpertSearchComponent implements OnInit {
-  @ViewChildren("checkboxes") checkboxes: QueryList<ElementRef>;
-
   teamMember: TeamMember[] = [];
-  resetTeamMember: TeamMember[] = [];
-  searchText: any;
+  p: any;
+  service: string;
+  proficiency: string;
 
   constructor(
     private apiService: ApiService,
-    private router: Router) { }
+    private router: Router,) { }
 
   ngOnInit(): void {
-    this.retrieveData();
   }
 
-  originalArrays: any = [];
-  retrieveData(){
-    this.apiService.fetchAllData().subscribe({
-        next: (response) => {
-          console.log(response);
-          this.teamMember = response; // if api is chosen, get what origianlArray gives
-        },
-        error: error => {
-          console.log(error)
-        }
-      });
-  }
+  filterList = {
+    service : ['S3', 'Lambda', 'API', 'DynamoDB', 'CloudFront'],
+    proficiency: ['Beginner', 'Intermediate', 'Expert']
+  };
 
-  tempApiArray: any = [];
-  newArray: any = [];
-  onChange(event: any){
-    if (event.target.checked){
-      this.tempApiArray = this.originalArrays.filter(
-        (e: any)=> e.proficiency == event.target.value);
-          this.teamMember = [];
-          this.newArray.push(this.tempApiArray);
-          for(let i=0; i<this.newArray.length; i++){
-            var firstFilter = this.newArray[i];
-            for(let i=0; i<firstFilter.length; i++){
-              var filterObj = firstFilter[i];
-              this.teamMember.push(filterObj);
-            }
-            console.log(this.teamMember);
-          }
-    } else {
-      this.tempApiArray = this.teamMember.filter(
-        (e: any)=> e.proficiency != event.target.value);
-      this.newArray = [];
-      this.teamMember = [];
-      this.newArray.push(this.tempApiArray);
-      for(let i=0; i<this.newArray.length; i++){
-        var firstFilter = this.newArray[i];
-        for(let i=0; i<firstFilter.length; i++){
-          var filterObj = firstFilter[i];
-          this.teamMember.push(filterObj);
-        }
+  filterChange(appliedfilters: any) {
+    let SK = 'SK';
+    this.service = appliedfilters.appliedFilterValues.service;
+    this.proficiency = appliedfilters.appliedFilterValues.proficiency;
+    let sk = 'skill#'+this.service +'#'+this.proficiency;
+    this.apiService.fetchGSISkills(sk, SK).subscribe({
+      next: (response) => {
+        let resultArray: any[] = [];
+        response.forEach((pk:any)=>{
+          resultArray.push(pk.PK);
+        });
+        this.getTeamMembers(resultArray);
+      },
+      error: error => {
+        console.log(error)
       }
-    }
+    });
   }
 
-  uncheckAll() {
-    this.teamMember = [];
-    this.tempApiArray = [];
-    this.newArray = [];
-    this.teamMember = this.resetTeamMember;
-    this.checkboxes.forEach((element) => {
-      // this.originalArrays = this.resetTeamMember;
-      element.nativeElement.checked = false;
-    });
+  getTeamMembers(filterArray: any[]){
+    for(let filter of filterArray){
+      console.log(filter);
+       this.apiService.fetchSingleData(filter).subscribe({
+         next: (response) => {
+           console.log(response);
+           this.teamMember.push(response);
+         },
+         error: error => {
+           console.log(error)
+         }
+       });
+    }
   }
 
   showRow(team: TeamMember) {
     this.router.navigate(['/experts/', team.user_name]);
+  }
+
+  resetSearch(){
+    this.teamMember = [];
   }
 }
