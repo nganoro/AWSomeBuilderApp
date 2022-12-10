@@ -28,7 +28,6 @@ export class TeamSearchComponent implements OnInit {
     this.apiService.fetchAllTeams().subscribe({
       next: (response: any) => {
         this.teams = response;
-        console.log(response);
       },
       error: error => {
         console.log(error)
