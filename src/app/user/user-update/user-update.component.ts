@@ -51,7 +51,6 @@ export class UserUpdateComponent implements OnInit {
     this.routeParamObs = this.activatedRoute.paramMap.subscribe((param) => {
       this.authenticatedUserName = param.get('id')! || '';
       this.getUserSkills(this.authenticatedUserName);
-      console.log()
       this.initForm();
     })
     this.uploadUrl();
@@ -127,7 +126,6 @@ export class UserUpdateComponent implements OnInit {
       userName,
       this.updateForm.value.skills
     );
-    console.log(newTeamMemeber);
     this.apiService.updateTeamMember(newTeamMemeber, this.authenticatedUserName, 'profile');
     this.profileData(userName);
 
@@ -146,7 +144,6 @@ export class UserUpdateComponent implements OnInit {
     this.uploadService.getUploadSignedUrl(this.userProfilePicName).subscribe({
       next: (response: any) => {
         this.fileUploadUrl = response.presigned_url;
-        console.log(this.fileUploadUrl);
       },
       error: error => {
         console.log(error)
@@ -180,7 +177,6 @@ export class UserUpdateComponent implements OnInit {
       let sk = 'skill#'+tempSkills[index].service +'#'+tempSkills[index].proficiency;
       oldSk = this.formatSK(this.oldSkills[index]);
       profile = new ProfileModel(pk, oldSk, sk);
-      console.log(profile, pk, oldSk);
       this.apiService.updateSkills(profile, pk, oldSk);
     }
   }

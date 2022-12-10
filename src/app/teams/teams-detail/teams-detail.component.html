@@ -24,24 +24,20 @@
             <div class="tab-pane fade show active p-3" id="one" role="tabpanel" aria-labelledby="one-tab">
               <h5 class="card-title">{{currentTeam.PK}} Biography</h5>
               <p class="card-text">{{currentTeam.Biography}}</p>
-              <a href="#" class="btn btn-primary">Go somewhere</a>
             </div>
             <div class="tab-pane fade p-3" id="two" role="tabpanel" aria-labelledby="two-tab">
               <h5 class="card-title">{{currentTeam.PK}} Tenets</h5>
               <p class="card-text">{{currentTeam.Tenets}}</p>
-              <a href="#" class="btn btn-primary">Go somewhere</a>
             </div>
             <div class="tab-pane fade p-3" id="three" role="tabpanel" aria-labelledby="three-tab">
               <h5 class="card-title">{{currentTeam.PK}} Competencies</h5>
               <p class="card-text">{{currentTeam.Competencies}}</p>
-              <a href="#" class="btn btn-primary">Go somewhere</a>
             </div>
             <div class="tab-pane fade p-3" id="four" role="tabpanel" aria-labelledby="four-tab">
               <h5 class="card-title">{{currentTeam.PK}} Members</h5>
               <ul class="card-text" *ngFor="let member of teamUsernames">
                 <li>{{member.first_name}} {{member.last_name}}</li>
               </ul>
-              <a href="#" class="btn btn-primary">Go somewhere</a>
             </div>
           </div>
         </div>

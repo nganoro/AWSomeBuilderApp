@@ -28,7 +28,7 @@ export class ExpertSearchComponent implements OnInit {
   };
 
   filterChange(appliedfilters: any) {
-    let SK = 'SK';
+    let SK = 'user_skills';
     this.service = appliedfilters.appliedFilterValues.service;
     this.proficiency = appliedfilters.appliedFilterValues.proficiency;
     let sk = 'skill#'+this.service +'#'+this.proficiency;
@@ -36,7 +36,7 @@ export class ExpertSearchComponent implements OnInit {
       next: (response) => {
         let resultArray: any[] = [];
         response.forEach((pk:any)=>{
-          resultArray.push(pk.PK);
+          resultArray.push(pk.gsi1_sk);
         });
         this.getTeamMembers(resultArray);
       },
@@ -48,10 +48,8 @@ export class ExpertSearchComponent implements OnInit {
 
   getTeamMembers(filterArray: any[]){
     for(let filter of filterArray){
-      console.log(filter);
        this.apiService.fetchSingleData(filter).subscribe({
          next: (response) => {
-           console.log(response);
            this.teamMember.push(response);
          },
          error: error => {

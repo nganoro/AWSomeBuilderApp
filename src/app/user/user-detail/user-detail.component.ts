@@ -3,8 +3,9 @@ import {TeamMember} from "../../shared/TeamMember";
 import {ApiService} from "../../authorization/api.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {AuthService} from "../../authorization/auth.service";
-import {Observable, Subscription} from "rxjs";
+import {Subscription} from "rxjs";
 import {UploadService} from "../../shared/upload.service";
+import {Skills} from "../../shared/skills.model";
 
 @Component({
   selector: 'app-user-detail',
@@ -17,6 +18,7 @@ export class UserDetailComponent implements OnInit {
   userName = '';
   routeParamObs: Subscription;
   userProfilePic: string;
+  skills: Skills[] = [];
 
   constructor(
     private apiService: ApiService,
@@ -31,9 +33,9 @@ export class UserDetailComponent implements OnInit {
     this.routeParamObs = this.activatedRoute.paramMap.subscribe((param) => {
       this.userName = param.get('id')! || '';
     })
-    console.log(this.userName);
     this.getTeamMember();
     this.fetchUrl();
+    this.getUserSkills(this.userName);
   }
 
   getTeamMember(){
@@ -55,6 +57,20 @@ export class UserDetailComponent implements OnInit {
     this.uploadService.getFetchSignedUrl(this.userName).subscribe({
       next: (response: any) => {
         this.userProfilePic = response.presigned_url;
+      },
+      error: error => {
+        console.log(error)
+      }
+    });
+  }
+
+  getUserSkills(user: string){
+    let key = 'PK';
+    this.apiService.fetchSkills(user, key).subscribe({
+      next: (response) => {
+        for(let skill of response[0].skills){
+          this.skills.push(skill);
+        }
       },
       error: error => {
         console.log(error)
