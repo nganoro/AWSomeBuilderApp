@@ -1,3 +1,9 @@
 export class Skills {
-  constructor(public service: string, public proficiency:string)  {}
+  public service?: string;
+  public proficiency?: string;
+
+  constructor(service?: string, proficiency?: string)  {
+    this.service = service;
+    this.proficiency = proficiency;
+  }
 }

@@ -2,6 +2,9 @@ import {Component, OnInit} from '@angular/core';
 import {TeamMember} from "../../shared/TeamMember";
 import {ApiService} from "../../authorization/api.service";
 import {Router} from "@angular/router";
+import {Skills} from "../../shared/skills.model";
+import {Store} from "@ngrx/store";
+import {sendingUserSkill} from "../../shared/user-state-store/user.action";
 
 
 @Component({
@@ -14,10 +17,12 @@ export class ExpertSearchComponent implements OnInit {
   p: any;
   service: string;
   proficiency: string;
+  chosenSkill: Skills;
 
   constructor(
     private apiService: ApiService,
-    private router: Router,) { }
+    private router: Router,
+    private store: Store) { }
 
   ngOnInit(): void {
   }
@@ -31,6 +36,7 @@ export class ExpertSearchComponent implements OnInit {
     let SK = 'user_skills';
     this.service = appliedfilters.appliedFilterValues.service;
     this.proficiency = appliedfilters.appliedFilterValues.proficiency;
+    this.chosenSkill = new Skills(this.service, this.proficiency);
     let sk = 'skill#'+this.service +'#'+this.proficiency;
     this.apiService.fetchGSISkills(sk, SK).subscribe({
       next: (response) => {
@@ -60,6 +66,7 @@ export class ExpertSearchComponent implements OnInit {
   }
 
   showRow(team: TeamMember) {
+    this.store.dispatch(sendingUserSkill({skill: this.chosenSkill}));
     this.router.navigate(['/experts/', team.user_name]);
   }
 

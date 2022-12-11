@@ -18,6 +18,8 @@
     "@angular/platform-browser": "^14.2.0",
     "@angular/platform-browser-dynamic": "^14.2.0",
     "@angular/router": "^14.2.0",
+    "@ngrx/store": "^13.2.0",
+    "@ngrx/store-devtools": "^13.2.0",
     "amazon-cognito-identity-js": "^5.2.12",
     "bootstrap": "^5.2.2",
     "generic-list-filter": "^0.1.6",

@@ -10,7 +10,7 @@
         <span class="idd1">{{newTeam.email}}</span>
       </div>
       <div class="text mt-3">
-				<span>{{newTeam.first_name}} works as a {{newTeam.title}} in the {{newTeam.team}} team.
+				<span>{{newTeam.first_name}} is {{(selectedSkill$ | async)?.proficiency}} at {{ (selectedSkill$ | async)?.service }}.
 				</span>
       </div>
       <div class="text mt-3">

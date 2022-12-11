@@ -1,9 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import {ActivatedRoute} from "@angular/router";
-import {Subscription} from "rxjs";
+import {Observable, Subscription} from "rxjs";
 import {TeamMember} from "../../shared/TeamMember";
 import {ApiService} from "../../authorization/api.service";
 import {UploadService} from "../../shared/upload.service";
+import {Skills} from "../../shared/skills.model";
+import {Store} from "@ngrx/store";
+import {selectSkill} from "../../shared/user-state-store/user.selector";
 
 @Component({
   selector: 'app-expert-detail',
@@ -16,11 +19,16 @@ export class ExpertDetailComponent implements OnInit {
   routeParamObs: Subscription;
   userProfilePic = '';
   newTeam: TeamMember;
+  selectedSkill$: Observable<Skills>;
+  // selectedProficiency$: Observable<Skills>;
 
   constructor(
     private activatedRoute: ActivatedRoute,
     private apiService: ApiService,
-    private uploadService: UploadService) { }
+    private uploadService: UploadService,
+    private store: Store) {
+      this.selectedSkill$ = store.select(selectSkill);
+    }
 
   ngOnInit(): void {
     this.routeParamObs = this.activatedRoute.paramMap.subscribe((param) => {

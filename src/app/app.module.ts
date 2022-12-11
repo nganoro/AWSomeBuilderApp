@@ -25,7 +25,11 @@ import { TeamStartComponent } from './teams/team-start/team-start.component';
 import { ExpertDetailComponent } from './experts/expert-detail/expert-detail.component';
 import { ConfirmationPageComponent } from './authorization/confirmation-page/confirmation-page.component';
 import {NgxPaginationModule} from 'ngx-pagination';
-import {GenericListFilterModule} from "generic-list-filter"; // <-- import the module
+import {GenericListFilterModule} from "generic-list-filter";
+import {StoreModule} from "@ngrx/store";
+import {StoreDevtoolsModule} from "@ngrx/store-devtools";
+import {environment} from "../environments/environment";
+import {userReducer} from "./shared/user-state-store/user.reducer"; // <-- import the module
 
 @NgModule({
   declarations: [
@@ -55,7 +59,9 @@ import {GenericListFilterModule} from "generic-list-filter"; // <-- import the m
         FormsModule,
         Ng2SearchPipeModule,
         NgxPaginationModule,
-        GenericListFilterModule
+        GenericListFilterModule,
+        StoreModule.forRoot({userSkills: userReducer},{}),
+        StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production}),
     ],
   providers: [
     AuthService,
