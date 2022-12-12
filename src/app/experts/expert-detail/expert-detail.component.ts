@@ -20,7 +20,6 @@ export class ExpertDetailComponent implements OnInit {
   userProfilePic = '';
   newTeam: TeamMember;
   selectedSkill$: Observable<Skills>;
-  // selectedProficiency$: Observable<Skills>;
 
   constructor(
     private activatedRoute: ActivatedRoute,

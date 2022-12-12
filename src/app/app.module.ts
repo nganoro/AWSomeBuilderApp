@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule} from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
@@ -29,7 +29,7 @@ import {GenericListFilterModule} from "generic-list-filter";
 import {StoreModule} from "@ngrx/store";
 import {StoreDevtoolsModule} from "@ngrx/store-devtools";
 import {environment} from "../environments/environment";
-import {userReducer} from "./shared/user-state-store/user.reducer"; // <-- import the module
+import {searchResultReducer, userReducer} from "./shared/user-state-store/user.reducer";
 
 @NgModule({
   declarations: [
@@ -60,7 +60,13 @@ import {userReducer} from "./shared/user-state-store/user.reducer"; // <-- impor
         Ng2SearchPipeModule,
         NgxPaginationModule,
         GenericListFilterModule,
-        StoreModule.forRoot({userSkills: userReducer},{}),
+        StoreModule.forRoot({
+          userSkills: userReducer, searchFilterResult: searchResultReducer,},{
+          runtimeChecks: {
+              strictStateImmutability: false,
+              strictActionImmutability: false,
+            },
+        }),
         StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production}),
     ],
   providers: [

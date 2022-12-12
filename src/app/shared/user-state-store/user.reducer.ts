@@ -1,10 +1,16 @@
 import {createReducer, on, props} from "@ngrx/store";
 import { Skills } from "../skills.model";
 import { TeamMember } from "../TeamMember";
-import {sendingUserSkill} from "./user.action";
+import { sendingFilterResults, sendingUserSkill} from "./user.action";
 
-export const initialTeamMemberState: TeamMember[] = [];
 export const initialSkillState: Skills = new Skills();
+
+export interface State {
+  currentTeam: TeamMember[]
+}
+export const initialFilterResult: State = {
+  currentTeam: []
+};
 
 export const userReducer = createReducer(
   initialSkillState,
@@ -13,6 +19,16 @@ export const userReducer = createReducer(
       ...state,
       service: action.skill.service,
       proficiency: action.skill.proficiency
+    }
+  })
+);
+
+export const searchResultReducer = createReducer(
+  initialFilterResult,
+  on(sendingFilterResults, (state, {teamMember} ) => {
+    return {
+      ...state,
+      currentTeam: teamMember
     }
   })
 );

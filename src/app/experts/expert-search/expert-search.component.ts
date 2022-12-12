@@ -4,7 +4,12 @@ import {ApiService} from "../../authorization/api.service";
 import {Router} from "@angular/router";
 import {Skills} from "../../shared/skills.model";
 import {Store} from "@ngrx/store";
-import {sendingUserSkill} from "../../shared/user-state-store/user.action";
+import {
+  sendingFilterResults,
+  sendingUserSkill
+} from "../../shared/user-state-store/user.action";
+import {selectFilter} from "../../shared/user-state-store/user.selector";
+import {Observable} from "rxjs";
 
 
 @Component({
@@ -13,16 +18,30 @@ import {sendingUserSkill} from "../../shared/user-state-store/user.action";
   styleUrls: ['./expert-search.component.css']
 })
 export class ExpertSearchComponent implements OnInit {
-  teamMember: TeamMember[] = [];
   p: any;
   service: string;
   proficiency: string;
   chosenSkill: Skills;
+  teamMember: TeamMember[] = [];
+  tempTeamMember: TeamMember[] = [];
+  filterResult$: Observable<TeamMember[]>
 
   constructor(
     private apiService: ApiService,
     private router: Router,
-    private store: Store) { }
+    private store: Store) {
+      this.filterResult$ = this.store.select(selectFilter);
+      this.filterResult$.subscribe({
+        next: (response: any[]) => {
+          // @ts-ignore
+          this.teamMember = response['currentTeam'];
+        },
+        error: error => {
+          console.log(error)
+        }
+      });
+  }
+
 
   ngOnInit(): void {
   }
@@ -56,12 +75,13 @@ export class ExpertSearchComponent implements OnInit {
     for(let filter of filterArray){
        this.apiService.fetchSingleData(filter).subscribe({
          next: (response) => {
-           this.teamMember.push(response);
+           this.tempTeamMember.push(response);
          },
          error: error => {
            console.log(error)
          }
        });
+      this.store.dispatch(sendingFilterResults({teamMember: this.tempTeamMember}));
     }
   }
 
