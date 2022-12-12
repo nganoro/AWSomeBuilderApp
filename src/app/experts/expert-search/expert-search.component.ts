@@ -5,6 +5,7 @@ import {Router} from "@angular/router";
 import {Skills} from "../../shared/skills.model";
 import {Store} from "@ngrx/store";
 import {
+  clearTable,
   sendingFilterResults,
   sendingUserSkill
 } from "../../shared/user-state-store/user.action";
@@ -92,5 +93,6 @@ export class ExpertSearchComponent implements OnInit {
 
   resetSearch(){
     this.teamMember = [];
+    this.store.dispatch(clearTable());
   }
 }

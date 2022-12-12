@@ -20,6 +20,7 @@ export class ExpertDetailComponent implements OnInit {
   userProfilePic = '';
   newTeam: TeamMember;
   selectedSkill$: Observable<Skills>;
+  currentUserSkills: Skills[] = [];
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -36,6 +37,7 @@ export class ExpertDetailComponent implements OnInit {
 
     this.getTeamMember();
     this.fetchUrl();
+    this.getUserSkills(this.routedExpert);
   }
 
   getTeamMember(){
@@ -53,6 +55,20 @@ export class ExpertDetailComponent implements OnInit {
     this.uploadService.getFetchSignedUrl(this.routedExpert).subscribe({
       next: (response: any) => {
         this.userProfilePic = response.presigned_url;
+      },
+      error: error => {
+        console.log(error)
+      }
+    });
+  }
+
+  getUserSkills(user: string){
+    let key = 'PK';
+    this.apiService.fetchSkills(user, key).subscribe({
+      next: (response) => {
+        for(let skill of response[0].skills){
+          this.currentUserSkills.push(skill);
+        }
       },
       error: error => {
         console.log(error)
