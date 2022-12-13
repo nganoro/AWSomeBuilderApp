@@ -78,6 +78,10 @@ export class UserDetailComponent implements OnInit {
     });
   }
 
+  onNavigate(team: string){
+    this.router.navigate(['/teams/', team]);
+  }
+
   ngOnDestroy(){
     this.routeParamObs.unsubscribe();
   }

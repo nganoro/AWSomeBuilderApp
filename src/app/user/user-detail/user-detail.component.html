@@ -45,11 +45,9 @@
             </div>
             <div class="tab-pane fade p-3" id="three" role="tabpanel" aria-labelledby="three-tab">
               <h5 class="card-title">{{teamMember.team}}</h5>
-              <p class="card-text">{{teamMember.first_name}} is in the {{teamMember.team}} team.</p>
-            </div>
-            <div class="tab-pane fade p-3" id="four" role="tabpanel" aria-labelledby="four-tab">
-
-              <a href="#" class="btn btn-primary">Go somewhere</a>
+              <span class="card-text">{{teamMember.first_name}} is in the {{teamMember.team}} team. Click </span>
+              <span style="cursor:pointer;" (click)="onNavigate(teamMember.team)">here</span>
+              <span> to learn more about the {{teamMember.team}} team.</span>
             </div>
           </div>
         </div>
