@@ -8,13 +8,21 @@ import {AuthService} from "../../authorization/auth.service";
   styleUrls: ['./header.component.css']
 })
 export class HeaderComponent implements OnInit {
-  isAuthenticated = false;
+  isSignedIn: boolean;
 
   constructor(
     private router: Router,
     private authService: AuthService) { }
 
   ngOnInit(): void {
+    this.authService.signInSubject.subscribe(
+      response => {
+        this.isSignedIn = response;
+      }
+    );
+    if(this.authService.getAuthenticatedUser()){
+      this.isSignedIn = true;
+    }
   }
 
   onHome(){
@@ -24,6 +32,11 @@ export class HeaderComponent implements OnInit {
     } else {
       this.router.navigate(['Authorization']);
     }
+  }
+
+  onNavigateHome(){
+    const authenticatedUser = this.authService.getAuthenticatedUser();
+    this.router.navigate(['/User/', authenticatedUser!.getUsername()]);
   }
 
   onLogout(){

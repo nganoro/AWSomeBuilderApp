@@ -28,14 +28,12 @@ export class UserDetailComponent implements OnInit {
     private uploadService: UploadService) { }
 
   ngOnInit(): void {
-    const userSession = this.authService.getUserSession();
-    console.log(userSession);
     this.routeParamObs = this.activatedRoute.paramMap.subscribe((param) => {
       this.userName = param.get('id')! || '';
     })
+    this.getUserSkills(this.userName);
     this.getTeamMember();
     this.fetchUrl();
-    this.getUserSkills(this.userName);
   }
 
   getTeamMember(){

@@ -22,9 +22,9 @@
         <th scope="col">User Name</th>
       </tr>
       </thead>
-      <tbody *ngFor="let member of teamMember | paginate : { itemsPerPage: 3, currentPage: p}">
-        <tr (click)="showRow(member)">
-          <th scope="row" class="counterCell"></th>
+      <tbody *ngFor="let member of teamMember | paginate : { itemsPerPage: 5, currentPage: p }; let i = index">
+        <tr (click)="showRow(member);">
+          <th scope="row">{{i+(((p - 1) * 4) + 1)}}</th>
           <td>{{member.first_name}}</td>
           <td>{{member.last_name}}</td>
           <td>{{member.team}}</td>
@@ -34,6 +34,6 @@
         </tr>
       </tbody>
     </table>
-    <pagination-controls (pageChange)="p = $event" class="pagination justify-content-end"></pagination-controls>
+    <pagination-controls (pageChange)="p=$event" class="pagination justify-content-end"></pagination-controls>
   </div>
 </div>

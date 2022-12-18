@@ -11,12 +11,14 @@ export class UserComponent implements OnInit {
 
   public username = '';
   teamMember: TeamMember;
+  authenticatedUser: boolean = false;
 
   constructor(private apiService: ApiService) { }
 
   ngOnInit(): void {
     this.username = this.apiService.getUserName();
     this.fetchUserInfo();
+    this.authenticatedUser = true;
   }
 
   fetchUserInfo(){

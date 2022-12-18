@@ -10,8 +10,9 @@ export class TeamMember{
   public last_name: string;
   public user_name: string;
   public skills?: Skills[];
+  public expert?: boolean
 
-  constructor(email: string, title: string, team: string, service: string, proficiency: string, firstName: string, lastName: string, user_name: string, skills?: Skills[]) {
+  constructor(email: string, title: string, team: string, service: string, proficiency: string, firstName: string, lastName: string, user_name: string, skills?: Skills[], expert?: boolean) {
     this.email = email;
     this.title = title;
     this.team = team;
@@ -21,6 +22,7 @@ export class TeamMember{
     this.last_name = lastName;
     this.user_name = user_name;
     this.skills = skills;
+    this.expert = expert;
   }
 }
 

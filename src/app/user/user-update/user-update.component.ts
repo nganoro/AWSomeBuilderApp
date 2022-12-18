@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {ActivatedRoute} from "@angular/router";
-import {Subscription} from "rxjs";
+import {Subscription, lastValueFrom, Observable} from "rxjs";
 import {FormArray, FormControl, FormGroup, Validators} from "@angular/forms";
 import {ApiService} from "../../authorization/api.service";
 import {TeamMember} from "../../shared/TeamMember";
@@ -28,14 +28,13 @@ export class UserUpdateComponent implements OnInit {
   oldSkills: any[] = [];
   skill: boolean = false;
 
-
   constructor(
     private activatedRoute: ActivatedRoute,
     private apiService: ApiService,
     private uploadService: UploadService,
     private authService: AuthService) {}
 
-  ngOnInit(): void {
+  async ngOnInit() {
     this.getAvatarName();
     let userSkills = new FormArray([]);
     this.updateForm = new FormGroup({
@@ -45,14 +44,18 @@ export class UserUpdateComponent implements OnInit {
       'proficiency': new FormControl( ),
       'firstName': new FormControl( ),
       'lastName': new FormControl( ),
-      'skills': userSkills
+      'skills': userSkills,
+      'expert': new FormControl()
     });
 
     this.routeParamObs = this.activatedRoute.paramMap.subscribe((param) => {
       this.authenticatedUserName = param.get('id')! || '';
-      this.getUserSkills(this.authenticatedUserName);
-      this.initForm();
     })
+    let skillResponse= await this.getUserSkills(this.authenticatedUserName);
+    console.log(skillResponse);
+    this.skills = skillResponse[0].skills;
+
+    this.initForm();
     this.uploadUrl();
   }
 
@@ -61,16 +64,10 @@ export class UserUpdateComponent implements OnInit {
     this.userProfilePicName = user!;
   }
 
-  getUserSkills(user: string){
+  getUserSkills(user: string): Promise<any>{
     let key = 'PK';
-    this.apiService.fetchSkills(user, key).subscribe({
-      next: (response) => {
-        this.skills = response[0].skills;
-      },
-      error: error => {
-        console.log(error)
-      }
-    });
+    let response = this.apiService.fetchSkills(user, key).toPromise();
+    return response;
   }
 
   private initForm(){
@@ -80,6 +77,8 @@ export class UserUpdateComponent implements OnInit {
       if (this.authenticatedUserName) {
         this.apiService.fetchSingleData(this.authenticatedUserName).subscribe({
           next: (response: TeamMember) => {
+            console.log(this.skills);
+            console.log(response);
             if(this.skills){
               // @ts-ignore
               for(let skill of this.skills){
@@ -115,6 +114,18 @@ export class UserUpdateComponent implements OnInit {
   onSubmit(){
     let userEmail = this.apiService.getUserEmail();
     let userName = this.apiService.getUserName();
+
+    const tempProficieny =  (<FormArray>this.updateForm.get('skills')).value;
+    console.log(tempProficieny);
+    for(let prof of tempProficieny){
+      if(prof.proficiency == 'Expert'){
+        this.updateForm.value.expert = true;
+        break;
+      } else {
+        this.updateForm.value.expert = false;
+      }
+    }
+
     const newTeamMemeber = new TeamMember(
       userEmail,
       this.updateForm.value.title,
@@ -124,7 +135,8 @@ export class UserUpdateComponent implements OnInit {
       this.updateForm.value.firstName,
       this.updateForm.value.lastName,
       userName,
-      this.updateForm.value.skills
+      this.updateForm.value.skills,
+      this.updateForm.value.expert
     );
     this.apiService.updateTeamMember(newTeamMemeber, this.authenticatedUserName, 'profile');
     this.profileData(userName);

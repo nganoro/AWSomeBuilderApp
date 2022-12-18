@@ -13,7 +13,14 @@
         <i class="fas fa-bars"></i>
       </button>
       <div class="collapse navbar-collapse" id="navbarExample01">
-        <div class="container-fluid">
+        <div class="container-fluid" *ngIf="!isSignedIn">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li routerLinkActive="active" class="nav-item">
+              <a class="nav-link">AWSome Development Services</a>
+            </li>
+          </ul>
+        </div>
+        <div class="container-fluid" *ngIf="isSignedIn">
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
             <li routerLinkActive="active" class="nav-item">
               <a class="nav-link"
@@ -38,9 +45,9 @@
               Account & Settings
             </a>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-              <a class="dropdown-item">My Account</a>
-              <a class="dropdown-item">Sign In</a>
-              <a class="dropdown-item" (click)="onLogout()">Sign Out</a>
+              <a class="dropdown-item" (click)="onNavigateHome()" *ngIf="isSignedIn">My Account</a>
+              <a class="dropdown-item" *ngIf="!isSignedIn">Sign In</a>
+              <a class="dropdown-item" *ngIf="isSignedIn" (click)="onLogout()">Sign Out</a>
             </div>
           </div>
         </div>

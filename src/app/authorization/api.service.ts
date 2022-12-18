@@ -1,11 +1,10 @@
 import {Injectable} from "@angular/core";
-import {HttpClient, HttpHeaders, HttpParams, HttpParamsOptions} from "@angular/common/http";
+import {HttpClient, HttpHeaders, HttpParams} from "@angular/common/http";
 import { AuthService} from "./auth.service";
 import { TeamMember } from "../shared/TeamMember";
-import {map, Observable, tap} from "rxjs";
+import {map, Observable} from "rxjs";
 import {Teams} from "../shared/Teams";
 import {ProfileModel} from "../shared/profile.model";
-import {Skills} from "../shared/skills.model";
 
 @Injectable()
 export class ApiService {
@@ -42,7 +41,9 @@ export class ApiService {
   }
 
 
-  fetchAllData():Observable<TeamMember[]> {
+  fetchAllExperts():Observable<TeamMember[]> {
+
+    let params = new HttpParams().set('SK', 'profile');
 
     const userSession = this.authService.getUserSession();
     const token = userSession.getIdToken().getJwtToken();
@@ -52,7 +53,10 @@ export class ApiService {
     headers = headers.append('Authorization', token);
 
     return this.http.get<any>('https://jwqaleasy0.execute-api.us-east-1.amazonaws.com/prod/experts',
-      {headers: headers})
+      {
+        headers: headers,
+        params: params
+      })
       .pipe(
         map((result) => {
             let resultArray: any[] = [];

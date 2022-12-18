@@ -1,12 +1,10 @@
 import {Injectable} from "@angular/core";
-import {HttpClient, HttpErrorResponse} from "@angular/common/http";
+import {HttpClient} from "@angular/common/http";
 import {Router} from "@angular/router";
 import { environment } from 'src/environments/environment';
 import {CognitoUser, CognitoUserPool, AuthenticationDetails, CognitoUserAttribute} from 'amazon-cognito-identity-js';
 import { User } from '../user/user.model';
-import {TeamMember} from "../shared/TeamMember";
-import {ApiService} from "./api.service";
-
+import {BehaviorSubject} from "rxjs";
 
 var poolData = {
   UserPoolId: environment.cognitoUserPoolId,
@@ -19,6 +17,7 @@ var userPool = new CognitoUserPool(poolData);
 export class AuthService {
 
   unique_Username = '';
+  signInSubject = new BehaviorSubject<boolean>(false);
 
   constructor(
     private http: HttpClient,
@@ -72,16 +71,15 @@ export class AuthService {
       onSuccess: (result) => {
           // var accessToken = result.getAccessToken().getJwtToken();
           // var idToken = result.getIdToken().getJwtToken();
-          console.log(result);
-          that.router.navigate(["/User"]);
-        },
+        this.signInSubject.next(true);
+        that.router.navigate(["/User" + "/" + username]);
+      },
       onFailure: (err) => {
         alert(err.message || JSON.stringify(err));
         window.location.reload();
         that.router.navigate(["/Authorization"]);
        },
     });
-
   }
 
   signOut(){

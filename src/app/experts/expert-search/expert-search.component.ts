@@ -19,12 +19,13 @@ import {Observable} from "rxjs";
   styleUrls: ['./expert-search.component.css']
 })
 export class ExpertSearchComponent implements OnInit {
-  p: any;
+  p: number = 1;
   service: string;
   proficiency: string;
   chosenSkill: Skills;
   teamMember: TeamMember[] = [];
   tempTeamMember: TeamMember[] = [];
+  expertsList: TeamMember[] = [];
   filterResult$: Observable<TeamMember[]>
 
   constructor(
@@ -45,6 +46,17 @@ export class ExpertSearchComponent implements OnInit {
 
 
   ngOnInit(): void {
+    if (this.teamMember.length == 0) {
+      this.apiService.fetchAllExperts().subscribe({
+        next: (response) => {
+          this.expertsList = response;
+          this.teamMember = this.expertsList;
+        },
+        error: error => {
+          console.log(error)
+        }
+      });
+    }
   }
 
   filterList = {
@@ -93,6 +105,9 @@ export class ExpertSearchComponent implements OnInit {
 
   resetSearch(){
     this.teamMember = [];
+    this.tempTeamMember = [];
+    this.expertsList = [];
     this.store.dispatch(clearTable());
+    console.log('teamMember:'+ this.teamMember, 'experList:'+ this.expertsList, 'tempTeam:'+ this.tempTeamMember);
   }
 }

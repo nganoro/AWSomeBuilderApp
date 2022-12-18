@@ -40,7 +40,8 @@ export class UserEditComponent implements OnInit {
       'firstName': new FormControl(),
       'lastName': new FormControl(),
       'userName': new FormControl(),
-      'skills': userSkills
+      'skills': userSkills,
+      'expert': new FormControl()
     });
     this.uploadUrl();
   }
@@ -48,6 +49,16 @@ export class UserEditComponent implements OnInit {
   onSubmit() {
     if (!this.profileForm.valid) {
       return;
+    }
+
+    const tempProficieny =  (<FormArray>this.profileForm.get('skills')).value;
+    for(let prof of tempProficieny){
+      if(prof.proficiency == 'Expert'){
+        this.profileForm.value.expert = true;
+        break;
+      } else {
+        this.profileForm.value.expert = false;
+      }
     }
 
     const newTeamMemeber = new TeamMember(
@@ -59,7 +70,8 @@ export class UserEditComponent implements OnInit {
       this.profileForm.value.firstName,
       this.profileForm.value.lastName,
       this.newUserName,
-      this.profileForm.value.skills
+      this.profileForm.value.skills,
+      this.profileForm.value.expert
     );
 
     console.log(newTeamMemeber);
