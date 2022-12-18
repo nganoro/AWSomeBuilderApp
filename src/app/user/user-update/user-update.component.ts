@@ -52,7 +52,6 @@ export class UserUpdateComponent implements OnInit {
       this.authenticatedUserName = param.get('id')! || '';
     })
     let skillResponse= await this.getUserSkills(this.authenticatedUserName);
-    console.log(skillResponse);
     this.skills = skillResponse[0].skills;
 
     this.initForm();
@@ -77,8 +76,6 @@ export class UserUpdateComponent implements OnInit {
       if (this.authenticatedUserName) {
         this.apiService.fetchSingleData(this.authenticatedUserName).subscribe({
           next: (response: TeamMember) => {
-            console.log(this.skills);
-            console.log(response);
             if(this.skills){
               // @ts-ignore
               for(let skill of this.skills){
@@ -115,8 +112,7 @@ export class UserUpdateComponent implements OnInit {
     let userEmail = this.apiService.getUserEmail();
     let userName = this.apiService.getUserName();
 
-    const tempProficieny =  (<FormArray>this.updateForm.get('skills')).value;
-    console.log(tempProficieny);
+    const tempProficieny = (<FormArray>this.updateForm.get('skills')).value;
     for(let prof of tempProficieny){
       if(prof.proficiency == 'Expert'){
         this.updateForm.value.expert = true;
