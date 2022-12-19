@@ -84,9 +84,9 @@ export class ExpertSearchComponent implements OnInit {
     });
   }
 
-  getTeamMembers(filterArray: any[]){
+  async getTeamMembers(filterArray: any[]){
     for(let filter of filterArray){
-       this.apiService.fetchSingleData(filter).subscribe({
+       await this.apiService.fetchSingleData(filter).subscribe({
          next: (response) => {
            this.tempTeamMember.push(response);
          },
@@ -108,6 +108,5 @@ export class ExpertSearchComponent implements OnInit {
     this.tempTeamMember = [];
     this.expertsList = [];
     this.store.dispatch(clearTable());
-    console.log('teamMember:'+ this.teamMember, 'experList:'+ this.expertsList, 'tempTeam:'+ this.tempTeamMember);
   }
 }

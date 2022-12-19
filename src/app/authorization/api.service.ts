@@ -304,6 +304,30 @@ export class ApiService {
       });
   }
 
+  deleteSkill(pk: string, sk: string){
+    let params = new HttpParams()
+      .set('PK', pk)
+      .set('SK', sk)
+
+    const userSession = this.authService.getUserSession();
+    const token = userSession.getIdToken().getJwtToken();
+
+    let headers = new HttpHeaders();
+    headers = headers.append('Content-Type', 'application/json');
+    headers = headers.append('Authorization', token);
+
+    return this.http.delete(
+      'https://jwqaleasy0.execute-api.us-east-1.amazonaws.com/prod/Profile',
+      {
+        headers: headers,
+        params: params,
+      })
+      .subscribe({
+        next: response => {console.log(response)},
+        error: error => {console.log(error)}
+      });
+  }
+
 
 }
 

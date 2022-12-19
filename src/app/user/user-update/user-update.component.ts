@@ -25,7 +25,7 @@ export class UserUpdateComponent implements OnInit {
   fileUploadUrl: string;
   skills: Skills;
   addSkills = false;
-  oldSkills: any[] = [];
+  oldSkills: Skills[] = [];
   skill: boolean = false;
 
   constructor(
@@ -135,7 +135,7 @@ export class UserUpdateComponent implements OnInit {
       this.updateForm.value.expert
     );
     this.apiService.updateTeamMember(newTeamMemeber, this.authenticatedUserName, 'profile');
-    this.profileData(userName);
+    this.profileData(userName, this.oldSkills, this.updateForm.value.skills);
 
     if(this.toFile){
       const file = this.toFile.item(0);
@@ -177,12 +177,29 @@ export class UserUpdateComponent implements OnInit {
     );
   }
 
-  profileData(pk: string){
+  async profileData(pk: string, oldSkill: Skills[], newSkill: Skills[]) {
+    let skillDeletions: Skills[] = [];
+    skillDeletions = this.getDifference(oldSkill, newSkill);
+    if (oldSkill.length != newSkill.length) {
+      for (let index = 0; index < skillDeletions.length; index++) {
+        let PK = this.authenticatedUserName;
+        let Sk = 'skill#' + skillDeletions[index].service;
+        await this.apiService.deleteSkill(PK, Sk);
+        console.log('deleting');
+      }
+    }
     let profile: ProfileModel;
     let oldSk: string;
     const tempSkills =  (<FormArray>this.updateForm.get('skills')).value;
     for(let index = 0; index < tempSkills.length; index++){
       let sk = 'skill#'+tempSkills[index].service +'#'+tempSkills[index].proficiency;
+      if(this.oldSkills[index] == undefined){
+        let ser = tempSkills[index].service;
+        this.oldSkills.push({
+          service: ser,
+          proficiency: ''
+        });
+      }
       oldSk = this.formatSK(this.oldSkills[index]);
       profile = new ProfileModel(pk, oldSk, sk);
       this.apiService.updateSkills(profile, pk, oldSk);
@@ -194,4 +211,13 @@ export class UserUpdateComponent implements OnInit {
     return sk;
   }
 
+  getDifference(oldSkill: Skills[], newSkill: Skills[]) {
+    let skillDeletions: Skills[] = [];
+    skillDeletions =  oldSkill.filter(object1 => {
+      return !newSkill.some(object2 => {
+        return object1.service === object2.service
+      });
+    });
+    return skillDeletions;
+  }
 }
